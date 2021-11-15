@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+{% extends "bootstrap/base.html" %}
+{% import "navbar.html" as nav %}
+{% block navbar %}
+{{ nav }}
+{% endblock navbar %}
+
+{% block content %}
+<div class="col-md-offset-1 col-md-10 panel panel-default">
+    <h2>System</h2>
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Dienst</th>
+                    <th>Aktion</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <span class="glyphicon glyphicon-info-sign" aria-hidden="true"
+                            title="System"></span>&nbsp;System
+                    </td>
+                    <td>
+                        {{ system }} / {{ release }} / {{ arch }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="glyphicon glyphicon-info-sign" aria-hidden="true"
+                            title="Speicher"></span>&nbsp;freier Speicher
+                    </td>
+                    <td>
+                        {{ freespace }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="glyphicon glyphicon-flash" aria-hidden="true" style="color: orange"
+                            title="add Wifi"></span>&nbsp;WiFi
+                    </td>
+                    <td>
+                        <form class="navbar-form navbar-left" action="/wifi" method="post">
+                            <div class="form-group">
+                                <input class="form-control" name="ssid" maxlength="64" required
+                                    placeholder="ssid"></input>
+                                <input class="form-control" type="password" name="wifi_password" minlength=8
+                                    maxlength="64" required placeholder="password"></input>
+                            </div>
+                            <button type="submit" class="btn btn-warning" value="Add Wifi">
+                                <span class="glyphicon glyphicon-flash" aria-hidden="true"></span>&nbsp;Add
+                            </button>
+                        </form>
+                        <form class="navbar-form navbar-left" action="/clear_wifi" method="post">
+                            <button type="submit" class="btn btn-danger" value="Clear Wifi">
+                                <span class="glyphicon glyphicon-flash" aria-hidden="true"></span>&nbsp;Clear
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true" style="color: blue"
+                            title="edit FTP User"></span>&nbsp;FTP User
+                    </td>
+                    <td>
+                        <form class="navbar-form navbar-left" action="/ftp" method="post">
+                            <div class="form-group">
+                                <input class="form-control" name="ftp_server" maxlength="256" placeholder="server"
+                                    value="{{ ftp_server }}"></input>
+                                <input class="form-control" name="ftp_user" maxlength="64" placeholder="user"
+                                    value="{{ ftp_user }}"></input>
+                                <input class="form-control" type="password" name="ftp_password" maxlength="64"
+                                    placeholder="password"></input>
+                            </div>
+                            <button type="submit" class="btn btn-primary" value="Update FTP User">
+                                <span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span>&nbsp;Update
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="col-md-offset-1 col-md-10">
+    <div class="navbar-form navbar-left">
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalDeleteLogs">
+            <span class="glyphicon glyphicon-trash" aria-hidden="true" title="Delete Logs"></span>&nbsp;Lösche
+            Logs
+        </button>
+    </div>
+    <div class="navbar-form navbar-left">
+        <button type="button" class="btn btn-danger" aria-label="Left Align" data-toggle="modal"
+            data-target="#modalUpdateScrabScrap">
+            <span class="glyphicon glyphicon-refresh" aria-hidden="true" title="Update ScrabScrap"></span>&nbsp;Update
+            ScrapScrap
+        </button>
+    </div>
+    <div class="navbar-form navbar-left">
+        <button type="button" class="btn btn-danger" aria-label="Left Align" data-toggle="modal"
+            data-target="#modalUpdateUnix">
+            <span class="glyphicon glyphicon-refresh" aria-hidden="true" title="Update Unix"></span>&nbsp;Update
+            Unix
+        </button>
+    </div>
+    <form class="navbar-form navbar-right" action="/download_logs" method="post">
+        <button type="submit" class="btn btn-primary">
+            <span class="glyphicon glyphicon-cloud-download" aria-hidden="true"
+                title="Download Logs"></span>&nbsp;Download Logs
+        </button>
+    </form>
+
+    <!-- Modal deleteLogs-->
+    <div class="modal fade" id="modalDeleteLogs" tabindex="-1" role="dialog" aria-labelledby="modalDeleteLogsLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="modalDeleteLogsLabel">Löschen der Logs</h4>
+                </div>
+                <div class="modal-body">
+                    Es werden alle Log-Einträge gelöscht. Dieser Vorgang kann nicht rückgängig gemacht werden.
+                </div>
+                <div class="modal-footer">
+                    <div class="navbar-form navbar-right">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
+                    </div>
+                    <form class="navbar-form navbar-right" action="/delete_logs" method="post">
+                        <button type="submit" class="btn btn-primary">Löschen</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal update ScrabScrap -->
+    <div class="modal fade" id="modalUpdateScrabScrap" tabindex="-1" role="dialog"
+        aria-labelledby="modalUpdateScrabScrapLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="modalUpdateScrabScrapLabel">Update ScrabScrap</h4>
+                </div>
+                <div class="modal-body">
+                    Das Update läuft in folgenden Schritten ab:<br />
+                    <ul>
+                        <li>Deaktivieren des HotSpots</li>
+                        <li>Aktivieren des Wifi Zugangs - wichtig es muss eine stabile WLAN Konfiguration verfügbar sein
+                            und konfiguriert sein</li>
+                        <li>Update von ScrabScrap von GitHub</li>
+                        <li>Deaktivieren des Wifi Zugangs</li>
+                        <li>Aktivieren des HotSpots</li>
+                        <li>Restart dieser Web-Anwendung</li>
+                    </ul>
+                    <p>Das Update kann mehrere Minuten dauern. Häufig wird das HotSpot Netzwerk getennt. In diesem
+                        Fall muss geprüft werden, ob der Hotspot wieder in der Netzwerkliste erscheint. Dann kann
+                        wieder eine Verbindung zum Hotspot aufgebaut werden und die Konfigurations-App weiter genutzt
+                        werden.
+                    </p>
+                    <p>Während des Update-Vorgangs ist kein Zugriff über den HotSpot möglich.</p>
+                </div>
+                <div class="modal-footer">
+                    <div class="navbar-form navbar-right">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
+                    </div>
+                    <form class="navbar-form navbar-right" action="/update_scrabscrap" method="post">
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal update Unix -->
+    <div class="modal fade" id="modalUpdateUnix" tabindex="-1" role="dialog" aria-labelledby="modalUpdateUnixLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="modalUpdateUnixLabel">Update Unix</h4>
+                </div>
+                <div class="modal-body">
+                    Das Update läuft in folgenden Schritten ab:<br />
+                    <ul>
+                        <li>Deaktivieren des HotSpots</li>
+                        <li>Aktivieren des Wifi Zugangs - wichtig es muss eine stabile WLAN Konfiguration verfügbar sein
+                            und konfiguriert sein</li>
+                        <li>Update des Betriebssystems</li>
+                        <li>Deaktivieren des Wifi Zugangs</li>
+                        <li>Aktivieren des HotSpots</li>
+                        <li>Restart dieser Web-Anwendung</li>
+                    </ul>
+                    <p>Das Update kann mehrere Minuten dauern. Häufig wird das HotSpot Netzwerk getennt. In diesem
+                        Fall muss geprüft werden, ob der Hotspot wieder in der Netzwerkliste erscheint. Dann kann
+                        wieder eine Verbindung zum Hotspot aufgebaut werden und die Konfigurations-App weiter genutzt
+                        werden.
+                    </p>
+                    <p>Während des Update-Vorgangs ist kein Zugriff über den HotSpot möglich.</p>
+                </div>
+                <div class="modal-footer">
+                    <div class="navbar-form navbar-right">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
+                    </div>
+                    <form class="navbar-form navbar-right" action="/update_unix" method="post">
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    {% endblock %}

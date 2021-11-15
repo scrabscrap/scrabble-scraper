@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+{% extends "bootstrap/base.html" %}
+{% import "navbar.html" as nav %}
+{% block navbar %}
+{{ nav }}
+{% endblock navbar %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2 panel panel-default">
+
+            <h2 class="media-heading">ScrabScrap konfigurieren</h2>
+            <div class="media">
+                <div class="media-left">
+                    <a href="#">
+                        <img class="media-object" src="/static/img/scrabscrap.png" class="img-thumbnail" width=200
+                            alt="ScrabScrap">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <p>
+                        Mit dieser Anwendung kann ScrabScrap eingestellt und konfiguriert werden.
+                        Über das Menü können die verschiedenen Funktionen zur Konfigurartion
+                        gestartet werden.
+                    </p>
+                    <p>
+                        Sobald alle Einstellungen vorgenommen wurden, kann über den Menüpunkt
+                        "Start&nbsp;App" wieder ScrabScrap aufgerufen werden. Dazu wird der
+                        Rechner neu gestartet.
+                    </p>
+                    <p>
+                        <i>Hinweis: </i>Solange diese Anwendung aktiv ist, wird der
+                        ScrapScrap-HotSpot genutzt. In diesem Modus ist kein Internet Zugriff möglich.
+                    </p>
+                </div>
+            </div>
+        </div><!-- //main content -->
+    </div><!-- //row -->
+</div> <!-- //container -->
+{% endblock %}

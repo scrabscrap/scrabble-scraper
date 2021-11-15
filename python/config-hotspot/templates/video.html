@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<header>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+</header>
+{% extends "bootstrap/base.html" %}
+{% import "navbar.html" as nav %}
+{% block navbar %}
+{{ nav }}
+{% endblock navbar %}
+
+{% block content %}
+<div class="col-md-offset-1 col-md-10 panel panel-default">
+
+    <h2>Kamera</h2>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Anzeige</h3>
+        </div>
+        <div class="panel-body">
+            <img src="{{ url_for('video_feed') }}">
+        </div>
+    </div>
+
+</div>
+{% endblock %}

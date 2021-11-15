@@ -1,0 +1,9 @@
+cv2
+flask
+flask_bootstrap
+gpiozero
+imutils
+numpy
+RPi.GPIO
+visual-logging
+wiringpi

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+{% extends "bootstrap/base.html" %}
+{% import "navbar.html" as nav %}
+{% block navbar %}
+{{ nav }}
+{% endblock navbar %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2 panel panel-default">
+
+            <h2 class="media-heading">Restart von ScrabScrap</h2>
+            <div class="media">
+                <div class="media-body">
+                    <p>
+                        Der Rechner wird neu gestartet und damit ScrabScrap automatisch gestartet.
+                        Es wird wieder die konfigurierte WLAN Verbindung aufgebaut und sofern diese
+                        korrekt konfiguriert ist, verbindet sich ScrabScrap mit dem Internet.
+                    </p>
+                </div>
+            </div>
+            <form class="navbar-form navbar-right" action="/scrabscrap" method="post">
+                <button type="submit" class="btn btn-primary">ScrabScrap starten</button>
+            </form>
+        </div><!-- //main content -->
+    </div><!-- //row -->
+</div> <!-- //container -->
+{% endblock %}
