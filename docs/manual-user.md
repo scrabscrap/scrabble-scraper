@@ -325,9 +325,9 @@ startet neu.
 
 ### Taster Blau
 
-Mit diesem Taster (länger als 3 Sekunden gedrückt halten) wird die Konfigurationsanwendung gestartet. Hierzu wird der HotSpot "ScrabScrap-Hotspot" gestartet.
+Mit diesem Taster (länger als 3 Sekunden gedrückt halten) wird die Konfigurationsanwendung gestartet. Hierzu wird der HotSpot "ScrabbleHotspot" gestartet.
 
-Danach mit dem HotSport verbinden (Default-Passwort: "scrabscrap-wifi") und
+Danach mit dem HotSport verbinden (Default-Passwort: "scrabble") und
 mit dem Browser die URL http://10.0.0.5:8080 aufrufen.
 
 _Hinweis:_ Diese Funktion kann nur genutzt werden, wenn "Pause" aktiv ist. D.h.

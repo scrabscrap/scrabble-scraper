@@ -210,7 +210,7 @@ sudo nano /etc/hostapd/hostapd.conf
 
 interface=wlan0
 driver=nl80211
-ssid=ScrabScrap-Hotspot
+ssid=ScrabbleHotspot
 hw_mode=g
 channel=6
 wmm_enabled=0
@@ -218,7 +218,7 @@ macaddr_acl=0
 auth_algs=1
 ignore_broadcast_ssid=0
 wpa=2
-wpa_passphrase=scrapscrab-wifi
+wpa_passphrase=scrabble
 wpa_key_mgmt=WPA-PSK
 wpa_pairwise=CCMP TKIP
 rsn_pairwise=CCMP
