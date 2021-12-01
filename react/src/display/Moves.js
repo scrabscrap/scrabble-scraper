@@ -8,11 +8,11 @@ class Moves extends React.Component {
       textAlign: 'right'
     }
     if (this.props.moves != null) {
-      for (const [key, value] of this.props.moves.entries()) {
+      for (const [key, value] of Array.from(this.props.moves.entries()).reverse()) {
         let sp = value.split(' ')
         if (sp.length === 4) {
           items.push(<tr>
-            <td>{key+1}</td>
+            <td>{key + 1}</td>
             <td>{sp[0]}</td>
             <td>{sp[1]}</td>
             <td></td>
@@ -21,7 +21,7 @@ class Moves extends React.Component {
           </tr>)
         } else {
           items.push(<tr>
-            <td>{key+1}</td>
+            <td>{key + 1}</td>
             <td>{sp[0]}</td>
             <td>{sp[1]}</td>
             <td>{sp[2]}</td>
@@ -33,14 +33,14 @@ class Moves extends React.Component {
       }
     }
     return (
-        <div className="card moves">
-          <div className="card-header">Züge</div>
-          <div className="card-body">
-            <table className={"moves"}>
-              {items}
-            </table>
-          </div>
+      <div className="card moves">
+        <div className="card-header">Züge</div>
+        <div className="card-body">
+          <table className={"moves"}>
+            {items}
+          </table>
         </div>
+      </div>
     );
   }
 
