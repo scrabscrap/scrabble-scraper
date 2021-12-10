@@ -35,7 +35,10 @@ class Config:
             for sect in _config.sections():
                 self.settings[sect] = {}
                 for opt in _config.options(sect):
-                    self.settings[sect][opt] = eval(_config.get(sect, opt))
+                    try:
+                        self.settings[sect][opt] = eval(_config.get(sect, opt))
+                    except NameError:
+                        self.settings[sect][opt] = _config.get(sect, opt)
         except Exception as e:
             logging.exception("INI-Datei kann nicht gelesen werden " + str(e))
 
