@@ -73,6 +73,8 @@ config_scrabble.read(ROOT_PATH + "/work/scrabble.ini")
 doubt_timeout = config_scrabble.get('scrabble','doubt_timeout', fallback='')
 malus_doubt = config_scrabble.get('scrabble', 'malus_doubt', fallback='')
 max_time = config_scrabble.get('scrabble','max_time', fallback='')
+board_layout = config_scrabble.get('board','layout', fallback='')
+video_rotade = config_scrabble.get('video','rotade', fallback='False')
 ftp_active = config_scrabble.get('output','ftp', fallback='True')
 
 config_ftp = ConfigParser()
@@ -181,10 +183,13 @@ def scrabble():
     doubt_timeout = config_scrabble.get('scrabble','doubt_timeout', fallback='')
     malus_doubt = config_scrabble.get('scrabble', 'malus_doubt', fallback='')
     max_time = config_scrabble.get('scrabble','max_time', fallback='')
+    video_rotade = config_scrabble.get('video','rotade', fallback='True')
+    board_layout = config_scrabble.get('board','layout', fallback='')
     ftp_active = config_scrabble.get('output','ftp', fallback='True')
 
     return render_template('scrabble.html', doubt_timeout=doubt_timeout,
-        malus_doubt=malus_doubt, max_time=max_time, ftp_active=(ftp_active == 'True'))
+        malus_doubt=malus_doubt, max_time=max_time, video_rotade=(video_rotade == 'True'), 
+        board_layout=board_layout, ftp_active=(ftp_active == 'True'))
 
 @APP.route('/max_time', methods=['POST'])
 def set_max_time ():
@@ -206,6 +211,25 @@ def set_doubt_timeout ():
 def set_malus_doubt ():
     global malus_doubt
     config_scrabble['scrabble']['malus_doubt'] = malus_doubt = request.form['malus_doubt']
+    with open(ROOT_PATH + '/work/scrabble.ini', 'w') as conf:
+        config_scrabble.write(conf)
+    return redirect('/scrabble.html')
+
+@APP.route('/video_rotade', methods=['POST'])
+def set_video_rotade ():
+    global video_rotade
+    if request.form.get('video_rotade'):
+        config_scrabble['video']['rotade'] = video_rotade = 'True'
+    else:
+        config_scrabble['video']['rotade'] = video_rotade = 'False'
+    with open(ROOT_PATH + '/work/scrabble.ini', 'w') as conf:
+        config_scrabble.write(conf)
+    return redirect('/scrabble.html')
+
+@APP.route('/board_layout', methods=['POST'])
+def set_board_layout ():
+    global board_layout
+    config_scrabble['board']['layout'] = board_layout = request.form['board_layout']
     with open(ROOT_PATH + '/work/scrabble.ini', 'w') as conf:
         config_scrabble.write(conf)
     return redirect('/scrabble.html')

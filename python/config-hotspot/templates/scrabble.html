@@ -73,6 +73,41 @@
                 </tr>
                 <tr>
                     <td>
+                        <span class="glyphicon glyphicon-film" aria-hidden="true" style="color: orange"
+                            title="Video rotade"></span>&nbsp;Video rotade
+                    </td>
+                    <td>
+                        <form class="navbar-form navbar-left" action="/video_rotade" method="post">
+                            <div class="form-group form-check">
+                                <input type="checkbox" class="form-check-input" name="video_rotade" id="video_rotade" {%
+                                    if video_rotade %} checked {% endif %}>
+                            </div>
+                            <button type="submit" class="btn btn-primary" value="Update">
+                                <span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span>&nbsp;Update
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="glyphicon glyphicon-th" aria-hidden="true" style="color: orange"
+                            title="Board layout"></span>&nbsp;Board layout
+                    </td>
+                    <td>
+                        <form class="navbar-form navbar-left" action="/board_layout" method="post">
+                            <div class="form-group">
+                                <input class="form-control" name="board_layout" maxlength="8" placeholder="custom"
+                                    value="{{ board_layout }}"></input>
+                            </div>
+                            <button type="submit" class="btn btn-warning" value="Update video rotade">
+                                <span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span>&nbsp;Update
+
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
                         <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true" style="color: blue"
                             title="FTP Upload"></span>&nbsp;FTP-Upload
                     </td>
