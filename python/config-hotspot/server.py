@@ -404,4 +404,6 @@ def reboot():
 
 
 if __name__ == "__main__":
+    display_left.show("CFG ")
+    display_right.show("AP  ")
     APP.run(host='0.0.0.0', port=8080, debug=True)
