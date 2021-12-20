@@ -5,4 +5,4 @@ SCRIPTPATH=$(dirname "$0")
 PROJECT="$(cd "$SCRIPTPATH/.." && pwd)"
 WORKDIR=$PROJECT/work
 
-cp -f $PROJECT/python/default/* $WORKDIR/
+sudo cp -f "$SCRIPTPATH/wpa_supplicant.conf" /etc/wpa_supplicant/wpa_supplicant.conf
