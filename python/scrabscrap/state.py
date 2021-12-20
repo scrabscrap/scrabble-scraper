@@ -92,10 +92,11 @@ class Names(State):
         super().__init__()
         led.red_blink()
         led.green_blink()
+        led.yellow_blink()
 
     def next(self, action, _picture, _scrabble):
         if action == PAUSE:
-            return self
+            return Names()
         if action == PLAYER1:
             return S2()
         if action == PLAYER2:

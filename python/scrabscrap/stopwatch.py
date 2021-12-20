@@ -153,7 +153,8 @@ class StopWatch:
         while True:
             if self.exit:
                 return
-            self._fill()
-            if self.callback:
-                self.callback()
+            if not self.paused:
+                self._fill()
+                if self.callback:
+                    self.callback()
             time.sleep(1)

@@ -203,7 +203,11 @@ class Game:
             if str(self.state) == 'Start':
                 logging.info('start the game with 1/2')
             elif str(self.state) == 'Names':
+                self.state.timer1._message('    ')
+                self.state.timer2._message('    ')
                 self.set_names()
+                self.state.timer1._message(self.scrabble.player[0][:4].upper())
+                self.state.timer2._message(self.scrabble.player[1][:4].upper())
             elif str(self.state) == 'Reset':
                 self.reset()
             elif str(self.state) == 'Config':
