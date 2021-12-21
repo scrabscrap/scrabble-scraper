@@ -164,12 +164,16 @@ def deleteLogs ():
 
 @APP.route('/update_unix', methods=['POST', 'GET'])
 def updateUnix ():
+    display_left.show("UPDT")
+    display_right.show("UNIX")
     #flag to update unix
     subprocess.call(ROOT_PATH + "/script/update-unix.sh", shell=True)
     return redirect('/system.html')
 
 @APP.route('/update_scrabscrap', methods=['POST', 'GET'])
 def updateScrabScrap ():
+    display_left.show("UPDT")
+    display_right.show("APP ")
     #flag to update ScrabScrap
     subprocess.call(ROOT_PATH + "/script/update-scrabscrap.sh", shell=True)
     return redirect('/system.html')
@@ -398,7 +402,7 @@ def reboot():
     if cap is not None:
         cap.stop()
         cap.close()
-
+    subprocess.call(ROOT_PATH + "/script/server-off.sh", shell=True)
     sys.exit(0)
 
 
