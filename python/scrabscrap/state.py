@@ -61,8 +61,12 @@ class Start(State):
         if action == PAUSE:
             return Names()
         if action == PLAYER1:
+            self.scrabble_queue.put(
+                ScrabbleOp("start", None, 0, _scrabble, [self.timer1.current(), self.timer2.current()]))
             return S2()
         if action == PLAYER2:
+            self.scrabble_queue.put(
+                ScrabbleOp("start", None, 0, _scrabble, [self.timer1.current(), self.timer2.current()]))
             return S1()
         if action == RESET:
             self.timer1._message("  RE")
@@ -98,8 +102,12 @@ class Names(State):
         if action == PAUSE:
             return Names()
         if action == PLAYER1:
+            self.scrabble_queue.put(
+                ScrabbleOp("start", None, 0, _scrabble, [self.timer1.current(), self.timer2.current()]))
             return S2()
         if action == PLAYER2:
+            self.scrabble_queue.put(
+                ScrabbleOp("start", None, 0, _scrabble, [self.timer1.current(), self.timer2.current()]))
             return S1()
         if action == RESET:
             self.timer1._message("  RE")

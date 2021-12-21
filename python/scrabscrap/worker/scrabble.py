@@ -57,7 +57,12 @@ class WorkerScrabble(threading.Thread):
             if item is None:
                 self.__queue.task_done()
                 break  # reached end of queue
-            if item.op == "move":
+            if item.op == "start":
+                try:
+                    self.__clear_game(item)
+                except Exception:
+                    logging.exception("Fehler bei clear game")
+            elif item.op == "move":
                 try:
                     _last_board = dict(item.scrabble.game[-1][item.scrabble.DICT_BOARD]) if len(
                         item.scrabble.game) > 0 else None
@@ -96,6 +101,37 @@ class WorkerScrabble(threading.Thread):
                 item.scrabble.get_score(item.scrabble.player[1])))
             self.__queue.task_done()
             logging.debug("scrabble task finished")
+
+    def __clear_game(self, item):
+        if WRITE_WEB or FTP:
+            try:
+                to_json = json.dumps(
+                    {
+                        'time': str(datetime.datetime.now()),
+                        'move': 0,
+                        'score1': 0,
+                        'score2': 0,
+                        'time1': int(item.time[0]),
+                        'time2': int(item.time[1]),
+                        'name1': item.scrabble.player[0],
+                        'name2': item.scrabble.player[1],
+                        'onmove': item.scrabble.player[item.active],
+                        'moves': [],
+                        'board': [],
+                        'bag': []
+                    })
+                # überschreibe den aktuellen Zustand
+                f = open(WEB_PATH + "data-0.json", "w")
+                f.write(to_json)
+                f.close()
+                f = open(WEB_PATH + "status.json", "w")
+                f.write(to_json)
+                f.close()
+                open(WEB_PATH + "image-0.jpg", 'a').close()
+                if FTP and self.ftp_queue is not None:
+                    self.ftp_queue.put(('move', 0, None))
+            except Exception as e:
+               logging.exception("Fehler beim Clean des Spielstandes {}".format(e))
 
     def __write_move(self, item):
         if WRITE_WEB or FTP:
