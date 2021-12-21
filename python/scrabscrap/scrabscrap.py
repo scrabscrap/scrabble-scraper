@@ -20,6 +20,7 @@ import atexit
 import logging
 import logging.config
 import os
+import signal
 import sys
 import time
 from contextlib import suppress
@@ -71,6 +72,8 @@ class Game:
             self.state.timer2._message("ERR ")
             led.led_off()
         atexit.register(self.cleanup)
+        signal.signal(signal.SIGTERM, self.cleanup)
+        signal.signal(signal.SIGINT, self.cleanup)
 
     def cleanup(self):
         self.state.timer1._message("    ")
