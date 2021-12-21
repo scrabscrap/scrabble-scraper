@@ -119,6 +119,11 @@ I-O legt der Spieler "Rot" seinen Namen.
 
 ![Gelber Taster](img/press-yellow.png) (Gelb)
 
+Im Display werden die ersten vier Zeichen der erkannten Spielernamen angezeigt. 
+Sind diese nicht korrekt, kann durch Drücken des gelben Buttons das Einlesen 
+wiederholt werden. Sollten die Spielernamen wiederholt nicht korrekt erkannt 
+werden, deutet das auf eine fehlerhafte Justinierung der Kamera hin.
+
 Danach kann der Gegner das Spiel starten.
 
 ### Grün soll beginnen
@@ -132,6 +137,7 @@ Danach kann der Gegner das Spiel starten.
 
 # Ende des Spiels
 
+Zunächst sicherstellen, dass das Spiel pausiert ist. Also die gelbe LED blinkt.
 Um ein Spiel zu beenden und zu arichivieren, muss der **schwarze Taster** an der
 Seite für mehr als 3 Sekunden gedrückt und dann wieder losgelassen werden.
 
@@ -231,19 +237,18 @@ Falls das "korrekte Anzweifeln" versehentlich ausgelöst wurde, kann durch
 Drücken des blauen Tasters der Zustand abgebrochen werden. Danach befindet
 sich das System in dem Zustand "Anzweifeln".
 
-### (Grün, Rot) oder (Grün, Gelb, Rot) blinken
+### (Grün, Gelb, Rot) blinken
 
 Start des Spiels. Blinkt zu der roten und grünen LED noch die gelbe LED,
 dann besteht - optional - die Möglichkeit die Namen der Spieler auf das 
 Brett zu legen. Der Mittelpunkt des Brettes muss mit einem Blank 
 besetzt werden. Links davon wird der Name von Spieler 1 (Grün) und 
 rechts davon der Name von Spieler 2 (Rot) gelegt. Liegen die Namen 
-korrekt, muss der gelbe Taster gedrückt werden (_Foto_). Danach blinken 
-Grün und Rot.
+korrekt, muss der gelbe Taster gedrückt werden (_Foto_). 
 
-Sofern keine Spieler-Namen gelegt werden, kann der Gegner das Spiel 
-starten. Wenn also der "grüne" Spieler beginnen soll, drückt
-der "rote" Spieler seinen Knopf und umgekehrt.
+Sofern keine Spieler-Namen gelegt werden oder die Namen korrekt erfasst
+wurden, kann der Gegner das Spiel starten. Wenn also der "grüne" Spieler 
+beginnen soll, drückt der "rote" Spieler seinen Knopf und umgekehrt.
 
 ### Grün, Blau leuchten
 
