@@ -29,3 +29,6 @@ workon cv
 
 cd "$PROJECT/python/config-hotspot"
 python server.py >> "$WORKDIR/log/hotspot.log"
+
+sudo $SCRIPTPATH/hotspot-off.sh
+sudo reboot

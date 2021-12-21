@@ -399,7 +399,6 @@ def reboot():
         cap.stop()
         cap.close()
 
-    os.system(ROOT_PATH + "/script/server-off.sh")
     sys.exit(0)
 
 

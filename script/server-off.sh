@@ -11,8 +11,5 @@ WORKDIR=$PROJECT/work
 # end hotspot
 sudo $SCRIPTPATH/hotspot-off.sh
 
-# wait for exit
-sleep 5
-
 # start scrabscrap
-exec $SCRIPTPATH/scrabscrap.sh
+sudo reboot
