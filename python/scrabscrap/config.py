@@ -58,14 +58,14 @@ IM_WIDTH = config.getint('video', 'size', fallback=1504)
 IM_HEIGHT = config.getint('video', 'size', fallback=1504)
 FPS = config.getint('video', 'fps', fallback=15)
 ROTATE = config.getboolean('video', 'rotate', fallback=False)
-BOARD_LAYOUT = config.get('board', 'layout', fallback="classic")
+BOARD_LAYOUT = config.get('board', 'layout', fallback='custom').replace('"', '')
 
 CLK1 = config.getint('tm1637', 'clk1', fallback=24)
 DIO1 = config.getint('tm1637', 'dio1', fallback=25)
 CLK2 = config.getint('tm1637', 'clk2', fallback=18)
 DIO2 = config.getint('tm1637', 'dio2', fallback=23)
 
-SYSTEM_QUIT = config.get('system', 'quit', fallback='shutdown')
+SYSTEM_QUIT = config.get('system', 'quit', fallback='shutdown').replace('"', '')
 
 MOTION_DETECTION = config.get('motion', 'detection', fallback='KNN')
 MOTION_LEARNING_RATE = config.getfloat('motion', 'learningRate', fallback=0.1)
