@@ -241,7 +241,7 @@ class D1P1(State):
         led.green_led()
         led.yellow_led()
         led.blue_blink()
-        self.timer2._write([28, 84, 94, 92])
+        self.timer2.message("UNDO")
 
     def next(self, action, _picture, _scrabble):
         if action in (PAUSE, PLAYER2):
@@ -365,7 +365,7 @@ class D2P2(State):
         led.red_led()
         led.yellow_led()
         led.blue_blink()
-        self.timer1._write([28, 84, 94, 92])
+        self.timer1.message("UNDO")
 
     def next(self, action, _picture, _scrabble):
         if action in (PAUSE, PLAYER1):
