@@ -23,7 +23,6 @@ import os
 import signal
 import sys
 import time
-from contextlib import suppress
 
 import cv2
 import imutils
