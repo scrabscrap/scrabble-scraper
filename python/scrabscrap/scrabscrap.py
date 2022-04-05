@@ -44,6 +44,7 @@ cameraLogger = logging.getLogger("cameraLogger")
 IS_RPI = os.uname()[4].startswith("arm")
 
 
+# noinspection PyUnresolvedReferences
 class Game:
 
     def __init__(self):

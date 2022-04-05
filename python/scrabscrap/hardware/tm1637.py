@@ -30,6 +30,7 @@ SOFTWARE.
 
 from time import sleep
 
+# noinspection PyUnresolvedReferences
 from wiringpi import wiringPiSetupGpio, pinMode, digitalWrite, GPIO
 
 wiringPiSetupGpio()

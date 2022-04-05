@@ -116,7 +116,6 @@ class Event:
         self.button_wait = button.wait
 
     def wait(self):
-        result = None
         result = self.button_wait()
         if result is None and self.keyboard_wait:
             result = self.keyboard_wait()

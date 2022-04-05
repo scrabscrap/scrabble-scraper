@@ -27,7 +27,9 @@ import cv2
 from config import IM_HEIGHT, IM_WIDTH, FPS, ROTATE, SIMULATE, SIMULATE_PATH
 
 try:
+    # noinspection PyUnresolvedReferences
     from picamera import PiCamera
+    # noinspection PyUnresolvedReferences
     from picamera.array import PiRGBArray
 except ImportError:
     SIMULATE = True
