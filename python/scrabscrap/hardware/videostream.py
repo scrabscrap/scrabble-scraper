@@ -32,6 +32,7 @@ try:
 except ImportError:
     SIMULATE = True
 
+
 class PiVideoStream:
 
     def __init__(self, src=0, name="PIVideoStream", width=IM_WIDTH, height=IM_HEIGHT, fps=FPS):

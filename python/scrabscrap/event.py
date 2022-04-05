@@ -36,6 +36,7 @@ RESET_SWITCH = 4    # GPIO4 - pin 7 - Schalter Reset
 REBOOT_SWITCH = 17  # GPI17 - pin 11 - Schalter Reboot
 CONFIG_SWITCH = 27  # GPIO27 - pin 13 - Schalter Config
 
+
 class EventButton:
     event = None
 

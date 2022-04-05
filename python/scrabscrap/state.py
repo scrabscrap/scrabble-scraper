@@ -413,6 +413,7 @@ class Quit(State):
     def next(self, action, _picture, _scrabble):
         return self
 
+
 class Config(State):
 
     def __init__(self):

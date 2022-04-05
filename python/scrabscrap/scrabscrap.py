@@ -162,13 +162,13 @@ class Game:
         self.cap.stop()
         if not self.cap.camera.closed:
             self.cap.close()
-         # restart app in current pid
+        # restart app in current pid
         os.sync()
         argv = [sys.executable] + sys.argv
-        os.execv(sys.executable, argv )
+        os.execv(sys.executable, argv)
 
     def start_config_server(self):
-        SCRIPT_DIR = os.path.abspath(os.path.dirname(os.path.abspath(__file__))+"/../../script")
+        script_dir = os.path.abspath(os.path.dirname(os.path.abspath(__file__))+"/../../script")
 
         logging.info("(config) start config server")
         self.state.timer1._message("CFG ")
@@ -182,10 +182,9 @@ class Game:
             self.cap.close()
 
         os.sync()
-        script = SCRIPT_DIR + "/server.sh"
+        script = script_dir + "/server.sh"
         os.system(script)
         sys.exit(0)
-
 
     def main(self):
         self.state.timer1._message("CAM ")
@@ -266,7 +265,7 @@ class Game:
             os.system('sudo poweroff')
         logging.info("exit app")
         self.state.timer1._message("END ")
-        self.state.timer2._message("APP" )
+        self.state.timer2._message("APP ")
         time.sleep(2)
         self.state.timer1._message("    ")
         self.state.timer2._message("    ")

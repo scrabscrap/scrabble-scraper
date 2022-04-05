@@ -131,7 +131,7 @@ class WorkerScrabble(threading.Thread):
                 if FTP and self.ftp_queue is not None:
                     self.ftp_queue.put(('move', 0, None))
             except Exception as e:
-               logging.exception("Fehler beim Clean des Spielstandes {}".format(e))
+                logging.exception("Fehler beim Clean des Spielstandes {}".format(e))
 
     def __write_move(self, item):
         if WRITE_WEB or FTP:
@@ -171,7 +171,7 @@ class WorkerScrabble(threading.Thread):
                 if FTP and self.ftp_queue is not None:
                     self.ftp_queue.put(('move', zug, None))
             except Exception as e:
-               logging.exception("Fehler beim Speichern des Spielstandes {}".format(e))
+                logging.exception("Fehler beim Speichern des Spielstandes {}".format(e))
 
     def __store_game(self, item):
         import uuid

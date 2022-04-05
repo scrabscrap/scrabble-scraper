@@ -25,6 +25,7 @@ from config import WEB_PATH
 
 WORK_DIR = os.path.abspath(os.path.dirname(os.path.abspath(__file__))+"/../../../work")
 
+
 class WorkerFtp(threading.Thread):
 
     def __init__(self, q):
