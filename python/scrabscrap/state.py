@@ -50,8 +50,8 @@ class Start(State):
 
     def __init__(self):
         super().__init__()
-        self.timer1._message("STAR")
-        self.timer2._message("TING")
+        self.timer1.message("STAR")
+        self.timer2.message("TING")
         WorkerScrabble(self.scrabble_queue).start()
         led.red_blink()
         led.green_blink()
@@ -69,21 +69,21 @@ class Start(State):
                 ScrabbleOp("start", None, 0, _scrabble, [self.timer1.current(), self.timer2.current()]))
             return S1()
         if action == RESET:
-            self.timer1._message("  RE")
-            self.timer2._message("SET ")
+            self.timer1.message("  RE")
+            self.timer2.message("SET ")
             led.led_off()
             self.scrabble_queue.put(
                 ScrabbleOp("reset", None, 0, _scrabble, [self.timer1.current(), self.timer2.current()]))
             return Reset()
         if action == QUIT:
-            self.timer1._message(" APP")
-            self.timer2._message("END ")
+            self.timer1.message(" APP")
+            self.timer2.message("END ")
             self.scrabble_queue.put(
                 ScrabbleOp("quit", None, 0, _scrabble, [self.timer1.current(), self.timer2.current()]))
             return Quit()
         if action == CONFIG:
-            self.timer1._message("CFG ")
-            self.timer2._message("BOOT")
+            self.timer1.message("CFG ")
+            self.timer2.message("BOOT")
             self.scrabble_queue.put(
                 ScrabbleOp("quit", None, 0, _scrabble, [self.timer1.current(), self.timer2.current()]))
             return Config()
@@ -110,21 +110,21 @@ class Names(State):
                 ScrabbleOp("start", None, 0, _scrabble, [self.timer1.current(), self.timer2.current()]))
             return S1()
         if action == RESET:
-            self.timer1._message("  RE")
-            self.timer2._message("SET ")
+            self.timer1.message("  RE")
+            self.timer2.message("SET ")
             led.led_off()
             self.scrabble_queue.put(
                 ScrabbleOp("reset", None, 0, _scrabble, [self.timer1.current(), self.timer2.current()]))
             return Reset()
         if action == QUIT:
-            self.timer1._message(" APP")
-            self.timer2._message("END ")
+            self.timer1.message(" APP")
+            self.timer2.message("END ")
             self.scrabble_queue.put(
                 ScrabbleOp("quit", None, 0, _scrabble, [self.timer1.current(), self.timer2.current()]))
             return Quit()
         if action == CONFIG:
-            self.timer1._message("CFG ")
-            self.timer2._message("BOOT")
+            self.timer1.message("CFG ")
+            self.timer2.message("BOOT")
             self.scrabble_queue.put(
                 ScrabbleOp("quit", None, 0, _scrabble, [self.timer1.current(), self.timer2.current()]))
             return Config()
@@ -179,7 +179,7 @@ class P1(State):
         if self.timer1.doubt_possible()[0]:
             led.blue_blink()
         if message:
-            self.timer1._message(message)
+            self.timer1.message(message)
 
     def next(self, action, _picture, _scrabble):
         if self.message:
@@ -189,21 +189,21 @@ class P1(State):
         if action == DOUBT and self.timer1.doubt_possible()[0]:
             return D1()
         if action == RESET:
-            self.timer1._message("  RE")
-            self.timer2._message("SET ")
+            self.timer1.message("  RE")
+            self.timer2.message("SET ")
             led.led_off()
             self.scrabble_queue.put(
                 ScrabbleOp("reset", None, 0, _scrabble, [self.timer1.current(), self.timer2.current()]))
             return Reset()
         if action == QUIT:
-            self.timer1._message(" APP")
-            self.timer2._message("END ")
+            self.timer1.message(" APP")
+            self.timer2.message("END ")
             self.scrabble_queue.put(
                 ScrabbleOp("quit", None, 0, _scrabble, [self.timer1.current(), self.timer2.current()]))
             return Quit()
         if action == CONFIG:
-            self.timer1._message("CFG ")
-            self.timer2._message("BOOT")
+            self.timer1.message("CFG ")
+            self.timer2.message("BOOT")
             self.scrabble_queue.put(
                 ScrabbleOp("quit", None, 0, _scrabble, [self.timer1.current(), self.timer2.current()]))
             return Config()
@@ -217,7 +217,7 @@ class D1(State):
         led.green_led()
         led.blue_led()
         if message:
-            self.timer2._message(message)
+            self.timer2.message(message)
 
     def next(self, action, _picture, _scrabble):
         if action == PLAYER2:
@@ -247,7 +247,7 @@ class D1P1(State):
         if action in (PAUSE, PLAYER2):
             # korrektes Anzweifeln
             # display spieler 2 = undo
-            # self.timer2._message("undo")
+            # self.timer2.message("undo")
             self.scrabble_queue.put(
                 ScrabbleOp("--", _picture, 0, _scrabble, [self.timer1.current(), self.timer2.current()]))
             return S1()
@@ -305,7 +305,7 @@ class P2(State):
         if self.timer2.doubt_possible()[0]:
             led.blue_blink()
         if message:
-            self.timer2._message(message)
+            self.timer2.message(message)
 
     def next(self, action, _picture, _scrabble):
         if self.message:
@@ -315,21 +315,21 @@ class P2(State):
         if action == DOUBT and self.timer2.doubt_possible()[0]:
             return D2()
         if action == RESET:
-            self.timer1._message("  RE")
-            self.timer2._message("SET ")
+            self.timer1.message("  RE")
+            self.timer2.message("SET ")
             led.led_off()
             self.scrabble_queue.put(
                 ScrabbleOp("reset", None, 1, _scrabble, [self.timer1.current(), self.timer2.current()]))
             return Reset()
         if action == QUIT:
-            self.timer1._message(" APP")
-            self.timer2._message("END ")
+            self.timer1.message(" APP")
+            self.timer2.message("END ")
             self.scrabble_queue.put(
                 ScrabbleOp("quit", None, 1, _scrabble, [self.timer1.current(), self.timer2.current()]))
             return Quit()
         if action == CONFIG:
-            self.timer1._message("CFG ")
-            self.timer2._message("BOOT")
+            self.timer1.message("CFG ")
+            self.timer2.message("BOOT")
             self.scrabble_queue.put(
                 ScrabbleOp("quit", None, 1, _scrabble, [self.timer1.current(), self.timer2.current()]))
             return Config()
@@ -371,7 +371,7 @@ class D2P2(State):
         if action in (PAUSE, PLAYER1):
             # korrektes Anzweifeln
             # display spieler 1 = undo
-            # self.timer1._message("undo")
+            # self.timer1.message("undo")
             self.scrabble_queue.put(
                 ScrabbleOp("--", _picture, 1, _scrabble, [self.timer1.current(), self.timer2.current()]))
             return S2()
@@ -405,8 +405,8 @@ class Quit(State):
         led.led_off()
         self.timer1.stop()
         self.timer2.stop()
-        self.timer1._message("END ")
-        self.timer2._message("    ")
+        self.timer1.message("END ")
+        self.timer2.message("    ")
         self.scrabble_queue.put(None)
         self.scrabble_queue.join()
 
@@ -421,8 +421,8 @@ class Config(State):
         led.led_off()
         self.timer1.stop()
         self.timer2.stop()
-        self.timer1._message("CFG ")
-        self.timer2._message("BOOT")
+        self.timer1.message("CFG ")
+        self.timer2.message("BOOT")
         self.scrabble_queue.put(None)
         self.scrabble_queue.join()
 

@@ -67,16 +67,16 @@ class Game:
             self.cap = vs.get_video()
         except Exception as e:
             logging.error("(camera) Exception {}".format(e))
-            self.state.timer1._message("CAM ")
-            self.state.timer2._message("ERR ")
+            self.state.timer1.message("CAM ")
+            self.state.timer2.message("ERR ")
             led.led_off()
         atexit.register(self.cleanup)
         signal.signal(signal.SIGTERM, self.cleanup)
         signal.signal(signal.SIGINT, self.cleanup)
 
     def cleanup(self):
-        self.state.timer1._message("    ")
-        self.state.timer2._message("    ")
+        self.state.timer1.message("    ")
+        self.state.timer2.message("    ")
         logging.getLogger('').handlers[0].doRollover()
         logging.getLogger('cameraLogger').handlers[0].doRollover()
         logging.getLogger('visualLogger').handlers[0].doRollover()
@@ -151,8 +151,8 @@ class Game:
 
     def reset(self):
         logging.info("(reset) game restart")
-        self.state.timer1._message("  RE")
-        self.state.timer2._message("SET ")
+        self.state.timer1.message("  RE")
+        self.state.timer2.message("SET ")
         time.sleep(5)
         logging.getLogger('').handlers[0].doRollover()
         logging.getLogger('cameraLogger').handlers[0].doRollover()
@@ -170,8 +170,8 @@ class Game:
         script_dir = os.path.abspath(os.path.dirname(os.path.abspath(__file__))+"/../../script")
 
         logging.info("(config) start config server")
-        self.state.timer1._message("CFG ")
-        self.state.timer2._message("BOOT")
+        self.state.timer1.message("CFG ")
+        self.state.timer2.message("BOOT")
         time.sleep(5)
         logging.getLogger('').handlers[0].doRollover()
         logging.getLogger('cameraLogger').handlers[0].doRollover()
@@ -186,8 +186,8 @@ class Game:
         sys.exit(0)
 
     def main(self):
-        self.state.timer1._message("CAM ")
-        self.state.timer2._message("    ")
+        self.state.timer1.message("CAM ")
+        self.state.timer2.message("    ")
         try:
             self.cap.start()
             _, self.resized = self.cap.read()
@@ -195,7 +195,7 @@ class Game:
             self.state.timer2._fill_display()
         except Exception as e:
             logging.error("cam exception {}".format(e))
-            self.state.timer2._message("ERR ")
+            self.state.timer2.message("ERR ")
             time.sleep(30)
 
         if SIMULATE:
@@ -204,11 +204,11 @@ class Game:
             if str(self.state) == 'Start':
                 logging.info('start the game with 1/2')
             elif str(self.state) == 'Names':
-                self.state.timer1._message('    ')
-                self.state.timer2._message('    ')
+                self.state.timer1.message('    ')
+                self.state.timer2.message('    ')
                 self.set_names()
-                self.state.timer1._message(self.scrabble.player[0][:4].upper())
-                self.state.timer2._message(self.scrabble.player[1][:4].upper())
+                self.state.timer1.message(self.scrabble.player[0][:4].upper())
+                self.state.timer2.message(self.scrabble.player[1][:4].upper())
             elif str(self.state) == 'Reset':
                 self.reset()
             elif str(self.state) == 'Config':
@@ -252,22 +252,22 @@ class Game:
         led.led_off()
         if SYSTEM_QUIT == 'reboot':
             logging.info("reboot")
-            self.state.timer1._message("  RE")
-            self.state.timer2._message("BOOT")
+            self.state.timer1.message("  RE")
+            self.state.timer2.message("BOOT")
             time.sleep(2)
             os.system('sudo reboot')
         elif SYSTEM_QUIT == 'shutdown':
             logging.info("shutdown")
-            self.state.timer1._message("SHUT")
-            self.state.timer2._message("DOWN")
+            self.state.timer1.message("SHUT")
+            self.state.timer2.message("DOWN")
             time.sleep(2)
             os.system('sudo poweroff')
         logging.info("exit app")
-        self.state.timer1._message("END ")
-        self.state.timer2._message("APP ")
+        self.state.timer1.message("END ")
+        self.state.timer2.message("APP ")
         time.sleep(2)
-        self.state.timer1._message("    ")
-        self.state.timer2._message("    ")
+        self.state.timer1.message("    ")
+        self.state.timer2.message("    ")
         sys.exit(0)
 
 

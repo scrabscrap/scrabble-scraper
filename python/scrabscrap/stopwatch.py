@@ -138,7 +138,7 @@ class StopWatch:
         if self.display is not None:
             self.display.show(self.get_timer(), True)
 
-    def _message(self, msg):
+    def message(self, msg):
         if self.display is not None:
             self.display.show(msg)
 
