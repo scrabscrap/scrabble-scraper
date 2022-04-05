@@ -183,7 +183,7 @@ class P1(State):
 
     def next(self, action, _picture, _scrabble):
         if self.message:
-            self.timer1._fill_display()
+            self.timer1.fill_display()
         if action in (PAUSE, PLAYER2):
             return S1()
         if action == DOUBT and self.timer1.doubt_possible()[0]:
@@ -252,7 +252,7 @@ class D1P1(State):
                 ScrabbleOp("--", _picture, 0, _scrabble, [self.timer1.current(), self.timer2.current()]))
             return S1()
         if action == DOUBT:
-            self.timer1._fill_display()
+            self.timer1.fill_display()
             return D1()
         return self
 
@@ -309,7 +309,7 @@ class P2(State):
 
     def next(self, action, _picture, _scrabble):
         if self.message:
-            self.timer2._fill_display()
+            self.timer2.fill_display()
         if action in (PAUSE, PLAYER1):
             return S2()
         if action == DOUBT and self.timer2.doubt_possible()[0]:
@@ -376,7 +376,7 @@ class D2P2(State):
                 ScrabbleOp("--", _picture, 1, _scrabble, [self.timer1.current(), self.timer2.current()]))
             return S2()
         if action == DOUBT:
-            self.timer1._fill_display()
+            self.timer1.fill_display()
             return D2()
         return self
 

@@ -45,7 +45,7 @@ class StopWatch:
                 self.display = tm1637.TM1637(clk=CLK1, dio=DIO1)
             else:
                 self.display = tm1637.TM1637(clk=CLK2, dio=DIO2)
-            self._fill = self._fill_display
+            self._fill = self.fill_display
         else:
             self.display = None
             self._fill = self.dummy
@@ -134,7 +134,7 @@ class StopWatch:
             return "-{:01d}{:02d}".format(int((_s // 60) % 60), int(_s % 60))
         return "----"
 
-    def _fill_display(self):
+    def fill_display(self):
         if self.display is not None:
             self.display.show(self.get_timer(), True)
 

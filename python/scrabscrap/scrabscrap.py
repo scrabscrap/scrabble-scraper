@@ -191,8 +191,8 @@ class Game:
         try:
             self.cap.start()
             _, self.resized = self.cap.read()
-            self.state.timer1._fill_display()
-            self.state.timer2._fill_display()
+            self.state.timer1.fill_display()
+            self.state.timer2.fill_display()
         except Exception as e:
             logging.error("cam exception {}".format(e))
             self.state.timer2.message("ERR ")
