@@ -137,6 +137,7 @@ class TM1637(object):
         self._stop()
         self._write_dsp_ctrl()
 
+    # noinspection PyMethodMayBeStatic
     def encode_digit(self, digit):
         """Convert a character 0-9, a-f to a segment."""
         return _SEGMENTS[digit & 0x0f]
@@ -150,6 +151,7 @@ class TM1637(object):
             segments[i] = self.encode_char(string[i])
         return segments
 
+    # noinspection PyMethodMayBeStatic
     def encode_char(self, char):
         """Convert a character 0-9, a-z, space, dash or star to a segment."""
         o = ord(char)

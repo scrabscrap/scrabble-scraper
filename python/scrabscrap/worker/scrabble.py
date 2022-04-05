@@ -142,6 +142,7 @@ class WorkerScrabble(threading.Thread):
                 k1 = [chr(ord('a') + y) + str(x + 1) for (x, y) in k]
                 v1 = [t for (t, p) in v]
                 bag = tiles.bag_as_list.copy()
+                # noinspection PyStatementEffect
                 [i for i in v1 if i not in bag or bag.remove(i)]  # alle aus v1 entfernen, falls in bag
                 movelist = [str(g[item.scrabble.DICT_MOVE]) for g in item.scrabble.game]
 

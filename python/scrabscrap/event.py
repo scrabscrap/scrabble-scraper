@@ -19,7 +19,7 @@ import cv2
 from gpiozero import Button
 try:
     import RPi.GPIO
-except:
+except ImportError:
     from gpiozero.pins.mock import MockFactory
     from gpiozero import Device
     Device.pin_factory = MockFactory()
@@ -85,6 +85,7 @@ class EventButton:
 
 class EventKeyboard:
 
+    # noinspection PyMethodMayBeStatic
     def wait(self):
         key = cv2.waitKey(1 if not SIMULATE else 0) & 0xff
 

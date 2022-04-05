@@ -18,7 +18,7 @@
 from gpiozero import LED
 try:
     import RPi.GPIO
-except:
+except ImportError:
     from gpiozero.pins.mock import MockFactory
     from gpiozero import Device
     Device.pin_factory = MockFactory()
