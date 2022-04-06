@@ -73,18 +73,15 @@ class WorkerScrabble(threading.Thread):
                 except Exception:
                     logging.exception("Analyse des Scrabble Boards nicht erfolgreich - ? inkorrekte Punktestände")
             elif item.op == "--":
-                try:
-                    _board, warped = analyze_picture(item.img)
-                    item.img = warped
-                    item.scrabble.valid_challenge(_board, item.scrabble.player[item.active])
-                    self.__write_move(item)
-                except Exception:
-                    logging.exception("Analyse des Scrabble Boards nicht erfolgreich - ? inkorrekte Punktestände")
+                item.scrabble.valid_challenge(_board, item.scrabble.player[item.active])
+                zug = len(item.scrabble.game)
+                item.img = cv2.imread(WEB_PATH + "image-" + str(zug-2) + ".jpg")
+                self.__write_move(item)
             elif item.op == "challenge":
                 try:
-                    _board, warped = analyze_picture(item.img)
-                    item.img = warped
                     item.scrabble.invalid_challenge(_board, item.scrabble.player[item.active])
+                    zug = len(item.scrabble.game)
+                    item.img = cv2.imread(WEB_PATH + "image-" + str(zug-1) + ".jpg")
                     self.__write_move(item)
                 except Exception:
                     logging.exception("Analyse des Scrabble Boards nicht erfolgreich - ? inkorrekte Punktestände")

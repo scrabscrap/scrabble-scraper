@@ -472,22 +472,20 @@ class Scrabble:
         start = time.time()
         if len(self.game) < 1:
             raise Exception("anzweifeln: kann nicht als erster Zug verwendet werden")
-        new_board, new_tiles, removed_tiles, changed_tiles = self._prepare_board(new_board)
-        if len(new_tiles) >= 1:
-            raise Exception("anzweifeln: es können keine neuen Steine gelegt werden")
-        if len(removed_tiles) <= 0:
-            # keine Steine vom Board entfernt => Zug ignorieren
-            logging.info("korrekte challenge wird ignoriert, da keine Steine vom Board entfernt wurden")
+        # angezweifelter Zug
+        last_move = self.game[-1][self.DICT_MOVE]
+        if last_move.type == MoveType.withdraw:
+            logging.info("doppelte correct_challenge - time: {:.2f}".format(time.time() - start))
             return
-        else:
-            logging.debug("removed tiles:" + str(removed_tiles))
-            last_move = self.game[-1][self.DICT_MOVE]
-            move = Move(new_board.copy(), last_move.nickname)
-            move.type = MoveType.withdraw
-            move.score = -last_move.score
-            move.is_vertical = last_move.is_vertical
-            move.word = last_move.word
-            move.sum = last_move.sum - last_move.score
+        # Zustand des Bretts vor dem letzten Zug (vor dem ersten Zug leer)
+        last_board = {} if len(self.game) < 2 else self.game[-2][self.DICT_BOARD]
+        new_board, new_tiles, removed_tiles, changed_tiles = self._prepare_board(last_board)
+        move = Move(last_board.copy(), last_move.nickname)
+        move.type = MoveType.withdraw
+        move.score = -last_move.score
+        move.is_vertical = last_move.is_vertical
+        move.word = last_move.word
+        move.sum = last_move.sum - last_move.score
         self.game.append((None, new_board, move, removed_tiles, changed_tiles))
         logging.info("correct_challenge - time: {:.2f}".format(time.time() - start))
 

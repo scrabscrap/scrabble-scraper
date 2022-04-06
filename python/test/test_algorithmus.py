@@ -383,25 +383,27 @@ class AlgorithmusTestCase(unittest.TestCase):
 
     def test_116(self):
         # Testfall 116 - Algorithmus: korrektes Anzweifeln - Board nicht geleert
-        s = Scrabble()
-        # H4 FIRNS
-        board = {(3, 7): ('F', 75), (4, 7): ('I', 75), (5, 7): ('R', 75), (6, 7): ('N', 75), (7, 7): ('S', 75)}
-        s.move(board, "Spieler1")
-        # 5G V.TEN
-        board = {(3, 7): ('F', 75), (4, 7): ('I', 75), (5, 7): ('R', 75), (6, 7): ('N', 75), (7, 7): ('S', 75),
-                 (4, 6): ('V', 75), (4, 8): ('T', 75), (4, 9): ('E', 75), (4, 10): ('N', 75)}
-        s.move(board, "Spieler2")
-        s.valid_challenge(board, "Spieler1")
-        logging.info(s.print_board(board, {}, {}))
-        logging.info(str(s))
-        self.assertEqual(2, len(s.game))
-        self.assertEqual(24, s.get_score("Spieler1"))
-        self.assertEqual(20, s.get_score("Spieler2"))
-        b = s.game[-1][s.DICT_BOARD]
-        expected = dict(zip(*[board.keys(), [t for (t, p) in board.values()]]))
-        cmp = dict(zip(*[b.keys(), [t for (t, p) in b.values()]]))
-        self.assertEqual(cmp, expected, "Test 116")
-        del s
+        # diesen Testfall gibt's nicht mehr, da keine Analyse des Boards mehr
+        # durchgeführt wird
+        # s = Scrabble()
+        # # H4 FIRNS
+        # board = {(3, 7): ('F', 75), (4, 7): ('I', 75), (5, 7): ('R', 75), (6, 7): ('N', 75), (7, 7): ('S', 75)}
+        # s.move(board, "Spieler1")
+        # # 5G V.TEN
+        # board = {(3, 7): ('F', 75), (4, 7): ('I', 75), (5, 7): ('R', 75), (6, 7): ('N', 75), (7, 7): ('S', 75),
+        #          (4, 6): ('V', 75), (4, 8): ('T', 75), (4, 9): ('E', 75), (4, 10): ('N', 75)}
+        # s.move(board, "Spieler2")
+        # s.valid_challenge(board, "Spieler1")
+        # logging.info(s.print_board(board, {}, {}))
+        # logging.info(str(s))
+        # self.assertEqual(2, len(s.game))
+        # self.assertEqual(24, s.get_score("Spieler1"))
+        # self.assertEqual(20, s.get_score("Spieler2"))
+        # b = s.game[-1][s.DICT_BOARD]
+        # expected = dict(zip(*[board.keys(), [t for (t, p) in board.values()]]))
+        # cmp = dict(zip(*[b.keys(), [t for (t, p) in b.values()]]))
+        # self.assertEqual(cmp, expected, "Test 116")
+        # del s
         pass
 
     def test_117(self):
