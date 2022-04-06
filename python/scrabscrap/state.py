@@ -63,10 +63,12 @@ class Start(State):
         if action == PLAYER1:
             self.scrabble_queue.put(
                 ScrabbleOp("start", None, 0, _scrabble, [self.timer1.current(), self.timer2.current()]))
+            logging.debug("start (next S2)")
             return S2()
         if action == PLAYER2:
             self.scrabble_queue.put(
                 ScrabbleOp("start", None, 0, _scrabble, [self.timer1.current(), self.timer2.current()]))
+            logging.debug("start (next S1)")
             return S1()
         if action == RESET:
             self.timer1.message("  RE")
@@ -74,18 +76,21 @@ class Start(State):
             led.led_off()
             self.scrabble_queue.put(
                 ScrabbleOp("reset", None, 0, _scrabble, [self.timer1.current(), self.timer2.current()]))
+            logging.debug("reset der Anwendung")
             return Reset()
         if action == QUIT:
             self.timer1.message(" APP")
             self.timer2.message("END ")
             self.scrabble_queue.put(
                 ScrabbleOp("quit", None, 0, _scrabble, [self.timer1.current(), self.timer2.current()]))
+            logging.debug("quit der Anwendung")
             return Quit()
         if action == CONFIG:
             self.timer1.message("CFG ")
             self.timer2.message("BOOT")
             self.scrabble_queue.put(
                 ScrabbleOp("quit", None, 0, _scrabble, [self.timer1.current(), self.timer2.current()]))
+            logging.debug("starte config")
             return Config()
         return self
 
@@ -163,6 +168,7 @@ class S1(State):
             self.timer2.start_countdown()
             return S2()
         if action == PAUSE:
+            logging.debug("pause (next P1)")
             return P1()
         return self
 
@@ -185,8 +191,10 @@ class P1(State):
         if self.message:
             self.timer1.fill_display()
         if action in (PAUSE, PLAYER2):
+            logging.debug("continue (next S1)")
             return S1()
         if action == DOUBT and self.timer1.doubt_possible()[0]:
+            logging.debug("doubt (next D1)")
             return D1()
         if action == RESET:
             self.timer1.message("  RE")
@@ -224,10 +232,13 @@ class D1(State):
             # display spieler 1 = -10
             self.scrabble_queue.put(
                 ScrabbleOp("challenge", _picture, 0, _scrabble, [self.timer1.current(), self.timer2.current()]))
+            logging.debug("invalid challenge (next P1)")
             return P1(" -10")
         if action == PLAYER1:
+            logging.debug("correct challenge (next D1P1)")
             return D1P1()
         if action == PAUSE:
+            logging.debug("cancel challenge (next P1)")
             return P1()
         if action == DOUBT:
             return self
@@ -250,9 +261,11 @@ class D1P1(State):
             # self.timer2.message("undo")
             self.scrabble_queue.put(
                 ScrabbleOp("--", _picture, 0, _scrabble, [self.timer1.current(), self.timer2.current()]))
+            logging.debug("continue after correct challenge (next S1)")
             return S1()
         if action == DOUBT:
             self.timer1.fill_display()
+            logging.debug("cancel correct challenge (next D1)")
             return D1()
         return self
 
@@ -289,6 +302,7 @@ class S2(State):
             self.timer1.start_countdown()
             return S1()
         if action == PAUSE:
+            logging.debug("pause (next P2)")
             return P2()
         return self
 
@@ -311,8 +325,10 @@ class P2(State):
         if self.message:
             self.timer2.fill_display()
         if action in (PAUSE, PLAYER1):
+            logging.debug("continue (next S2)")
             return S2()
         if action == DOUBT and self.timer2.doubt_possible()[0]:
+            logging.debug("doubt (next D1)")
             return D2()
         if action == RESET:
             self.timer1.message("  RE")
@@ -348,10 +364,13 @@ class D2(State):
             # display spieler 2 = -10
             self.scrabble_queue.put(
                 ScrabbleOp("challenge", _picture, 1, _scrabble, [self.timer1.current(), self.timer2.current()]))
+            logging.debug("invalid challenge (next P2)")
             return P2(" -10")
         if action == PLAYER2:
+            logging.debug("correct challenge (next D2P2)")
             return D2P2()
         if action == PAUSE:
+            logging.debug("cancel challenge (next P1)")
             return P2()
         if action == DOUBT:
             return self
@@ -374,9 +393,11 @@ class D2P2(State):
             # self.timer1.message("undo")
             self.scrabble_queue.put(
                 ScrabbleOp("--", _picture, 1, _scrabble, [self.timer1.current(), self.timer2.current()]))
+            logging.debug("continue after correct challenge (next S2)")
             return S2()
         if action == DOUBT:
             self.timer1.fill_display()
+            logging.debug("cancel correct challenge (next D2)")
             return D2()
         return self
 
