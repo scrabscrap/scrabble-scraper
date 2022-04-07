@@ -21,11 +21,15 @@ import os
 import platform
 import subprocess
 import sys
+import time
+import numpy as np
 
 # add scrabscrap to path
 SCRIPT_DIR = os.path.abspath(os.path.dirname(os.path.abspath(__file__)) + "../scrabscrap")
 sys.path.append(os.path.dirname(SCRIPT_DIR))
 
+import analyzer_classic
+import analyzer_custom
 from configparser import ConfigParser
 from flask import render_template, redirect, request, Response, send_file
 from flask import Flask
@@ -35,6 +39,7 @@ from flask_bootstrap import Bootstrap
 from config import TM1637, CLK1, CLK2, DIO1, DIO2
 from hardware import led
 from hardware import videostream as vs
+from board import board
 
 if TM1637:
     from hardware import tm1637
@@ -297,6 +302,81 @@ def downloadGames():
 #  page video.html ##
 #####################
 cap = None
+warp_image = None
+
+@APP.route('/get_warp')
+def get_warp():
+    global warp_image
+
+    return Response(warp_image, mimetype='image/jpeg')
+
+
+@APP.route('/warp.html')
+def show_warp():
+    global cancel_stream
+    global cap
+    global warp_image
+
+    cancel_stream = True
+    if cap is None:
+        cap = vs.get_video()
+        cap.start()
+        cap.read()
+        atexit.register(cap.stop)
+
+    time.sleep(0.5)
+    picture = cap.picture()
+    if board_layout == 'custom':
+        analyzer = analyzer_custom.AnalyzerCustom()
+    else:
+        analyzer = analyzer_classic.AnalyzerClassic()
+    warped = analyzer._warp(picture)
+    _mark = board.overlay_grid(warped)
+    # _resized = cv2.resize(_mark, (500, 500))
+    _, buffer = cv2.imencode('.jpg', _mark)
+    warp_image = buffer.tobytes()
+
+    warp = ConfigParser()
+    warp.read(ROOT_PATH + '/work/warp.ini')
+    out = ""
+    if warp.has_section('warp'):
+        rect = np.zeros((4, 2), dtype="float32")
+        rect[0][0] = warp['warp']['top-left-x']
+        rect[0][1] = warp['warp']['top-left-y']
+        rect[1][0] = warp['warp']['top-right-x']
+        rect[1][1] = warp['warp']['top-right-y']
+        rect[2][0] = warp['warp']['bottom-right-x']
+        rect[2][1] = warp['warp']['bottom-right-y']
+        rect[3][0] = warp['warp']['bottom-left-x']
+        rect[3][1] = warp['warp']['bottom-left-y']
+        out = "warp.ini {}".format(rect)
+
+    return render_template('warp.html', out=out)
+
+
+@APP.route('/warp_store', methods=['POST'])
+def store_warp():
+    warp = ConfigParser()
+    warp.add_section('warp')
+    warp['warp']['top-left-x'] = str(analyzer_custom.last_warp[0][0])
+    warp['warp']['top-left-y'] = str(analyzer_custom.last_warp[0][1])
+    warp['warp']['top-right-x'] = str(analyzer_custom.last_warp[1][0])
+    warp['warp']['top-right-y'] = str(analyzer_custom.last_warp[1][1])
+    warp['warp']['bottom-right-x'] = str(analyzer_custom.last_warp[2][0])
+    warp['warp']['bottom-right-y'] = str(analyzer_custom.last_warp[2][1])
+    warp['warp']['bottom-left-x'] = str(analyzer_custom.last_warp[3][0])
+    warp['warp']['bottom-left-y'] = str(analyzer_custom.last_warp[3][1])
+    with open(ROOT_PATH + '/work/warp.ini', 'w') as conf:
+        warp.write(conf)
+    return redirect('/warp.html')
+
+
+@APP.route('/warp_delete', methods=['POST'])
+def delete_warp():
+    warp = ConfigParser()
+    with open(ROOT_PATH + '/work/warp.ini', 'w') as conf:
+        warp.write(conf)
+    return redirect('/warp.html')
 
 
 @APP.route('/video.html')

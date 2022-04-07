@@ -49,11 +49,18 @@ class AnalyzerCustom:
     def _warp(__image):
         global last_warp
 
-        cfg = configparser.ConfigParser()
-        cfg.read('warp.ini')
-        if cfg.has_option('warp', 'w'):
-            w = eval(cfg.get('warp', 'w'))
-            rect = np.array(w, dtype=np.float32)
+        warp = configparser.ConfigParser()
+        warp.read('warp.ini')
+        if warp.has_section('warp'):
+            rect = np.zeros((4, 2), dtype="float32")
+            rect[0][0] = warp['warp']['top-left-x']
+            rect[0][1] = warp['warp']['top-left-y']
+            rect[1][0] = warp['warp']['top-right-x']
+            rect[1][1] = warp['warp']['top-right-y']
+            rect[2][0] = warp['warp']['bottom-right-x']
+            rect[2][1] = warp['warp']['bottom-right-y']
+            rect[3][0] = warp['warp']['bottom-left-x']
+            rect[3][1] = warp['warp']['bottom-left-y']
             logging.debug("warp.ini {}".format(rect))
         else:
             # based on: https://www.pyimagesearch.com/2014/08/25/4-point-opencv-getperspective-transform-example/
