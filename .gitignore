@@ -41,6 +41,7 @@ tmtagsHistory
 .bundle
 
 # additional
+out/
 ignore/
 work/
 .vscode/
