@@ -28,14 +28,14 @@ import cv2
 import imutils
 import numpy as np
 
-from action import PAUSE, RESET, QUIT, CONFIG
-from config import SIMULATE, SCREEN, SYSTEM_QUIT, MOTION_DETECTION, MOTION_LEARNING_RATE, MOTION_WAIT, MOTION_AREA, \
-    BOARD_LAYOUT
-from event import Event
+from action import PLAYER1, PLAYER2
+from config import SIMULATE, SCREEN, SYSTEM_QUIT, MOTION_DETECTION, MOTION_LEARNING_RATE, MOTION_AREA, BOARD_LAYOUT
+from event import ActionEvent
 from hardware import videostream as vs
 from hardware import led
 from scrabble import Scrabble
 from state import Start
+from threading import Event
 
 logging.config.fileConfig(fname='log.conf', disable_existing_loggers=False)
 
@@ -48,7 +48,6 @@ class Game:
     def __init__(self):
         logging.info(os.uname())
         self.scrabble = Scrabble()
-        self.action_event = Event()
         self.picture = None
         self.resized = None
         if MOTION_DETECTION == 'KNN':
@@ -199,7 +198,41 @@ class Game:
 
         if SIMULATE:
             self.cap.cnt = 0
-        while str(self.state) != 'Quit':
+        action_event = Event()
+        event_provider = ActionEvent(action_event)
+        while True:
+            action = None
+            motion = False
+            while action is None:
+                event_provider.wait(action_event)
+                action_event.wait(0.4)
+                action = event_provider.get_event()
+
+                # motion detection
+                _, self.resized = self.cap.read()
+                motion, _ = self.motion_detection(self.resized)
+
+            # nur während des aktiven Spiels bei Zugbestätigung Foto machen
+            if action in (PLAYER1, PLAYER2) \
+                    and str(self.state) not in ('P1', 'P2', 'D1', 'D2', 'D1P1', 'D2P2'):
+
+                logging.debug("main: start read picture (motion={})".format(motion))
+                for _ in range(0, 10):
+                    if not motion:
+                        break
+                    _, self.resized = self.cap.read()
+                    motion, _ = self.motion_detection(self.resized)
+                    time.sleep(0.04)
+                self.picture = self.cap.picture()
+                logging.debug("main: end read picture")
+            else:
+                self.picture = None
+
+            self.state = self.state.next(action, self.picture, self.scrabble)
+
+            if SCREEN:
+                cv2.imshow("Live", self.resized)
+
             if str(self.state) == 'Start':
                 logging.info('main: start the game with 1/2')
             elif str(self.state) == 'Names':
@@ -212,48 +245,10 @@ class Game:
                 self.reset()
             elif str(self.state) == 'Config':
                 self.start_config_server()
-
-            action = None
-            motion = False
-            motion_wait = time.time() + 0  # warten nach motion erst nach der ersten Bewegung
-            while (action is None) or motion:
-                try:
-                    _, self.resized = self.cap.read()
-                    # self.resized = cv2.resize(self.resized, (500,500))
-                    motion, pic = self.motion_detection(self.resized)
-                    if motion:
-                        motion_wait = time.time() + MOTION_WAIT
-                    if SCREEN:
-                        if motion_wait > time.time():  # markiere Live Bild Gelb, falls Wartezeit wg.Bewegung
-                            cv2.rectangle(pic, (1, 1), (2, 2), (0, 255, 255), 2)
-                        cv2.imshow("Live", pic)
-                except Exception as err:
-                    logging.warning(f"(read/motion_detection) Exception: {err}")
-                for _ in range(0, 10):  # warte 0.7s auf das nächste Bild, aber nehme action sofort entgegen
-                    if action is None:
-                        action = self.action_event.wait()
-                    # bei diesen action sofort abbrechen
-                    if action in (PAUSE, RESET, QUIT, CONFIG):
-                        logging.debug("main: button pressed PAUSE, RESET, QUIT, CONFIG")
-                        motion = False
-                        break
-                    time.sleep(0.04)
-                    if action is not None:
-                        logging.debug("main: button pressed action")
-                        break
-                    if motion or motion_wait > time.time():
-                        break
-            # bei diesen action muss kein Bild aufgenommen werden
-            if action not in (PAUSE, RESET, QUIT, CONFIG):
-                logging.debug("main: start read picture")
-                self.picture = self.cap.picture()
-                logging.debug("main: end read picture")
-            else:
-                self.picture = None
-            self.state = self.state.next(action, self.picture, self.scrabble)
-            logging.info(
-                f"state: {self.state} timer 1={self.state.timer1.current():d} timer 2={self.state.timer2.current():d}")
-
+            elif str(self.state) == 'Quit':
+                break
+            logging.info("main: state {} timer 1={:d} timer 2={:d}".format(str(self.state), self.state.timer1.current(),
+                                                                      self.state.timer2.current()))
         led.led_off()
         if SYSTEM_QUIT == 'reboot':
             logging.info("main: reboot")

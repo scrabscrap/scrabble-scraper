@@ -16,7 +16,9 @@
 """
 
 import cv2
+import logging
 from gpiozero import Button
+from threading import Event
 try:
     import RPi.GPIO
 except ImportError:
@@ -37,10 +39,11 @@ REBOOT_SWITCH = 17  # GPI17 - pin 11 - Schalter Reboot
 CONFIG_SWITCH = 27  # GPIO27 - pin 13 - Schalter Config
 
 
-class EventButton:
+class ButtonEvent:
     event = None
 
-    def __init__(self):
+    def __init__(self, end_of_wait: Event):
+        self.end_of_wait = end_of_wait
         self.green = Button(GREEN_SWITCH)
         self.green.when_pressed = self.green_button_state
         self.yellow = Button(YELLOW_SWITCH)
@@ -58,65 +61,80 @@ class EventButton:
 
     def green_button_state(self):
         self.event = PLAYER1
+        self.end_of_wait.set()
 
     def yellow_button_state(self):
         self.event = PAUSE
+        self.end_of_wait.set()
 
     def blue_button_state(self):
         self.event = DOUBT
+        self.end_of_wait.set()
 
     def red_button_state(self):
         self.event = PLAYER2
+        self.end_of_wait.set()
 
     def reset_button_state(self):
         self.event = RESET
+        self.end_of_wait.set()
 
     def reboot_button_state(self):
         self.event = QUIT
+        self.end_of_wait.set()
 
     def config_button_state(self):
         self.event = CONFIG
+        self.end_of_wait.set()
 
-    def wait(self):
-        result = self.event
+    def wait(self, end_of_wait: Event):
         self.event = None
-        return result
+        self.end_of_wait = end_of_wait
 
 
-class EventKeyboard:
+class KeyboardEvent:
+    event = None
 
     # noinspection PyMethodMayBeStatic
-    def wait(self):
+    def wait(self, end_of_wait: Event):
+        self.event = None
         key = cv2.waitKey(1 if not SIMULATE else 0) & 0xff
 
+        self.event = None
         if (key == 27) or (key == ord('q')):
-            return QUIT
+            self.event = QUIT
         if key == ord('1'):
-            return PLAYER1
+            self.event = PLAYER1
         if key == ord('2'):
-            return PLAYER2
+            self.event = PLAYER2
         if key == ord('p'):
-            return PAUSE
+            self.event = PAUSE
         if key == ord('d'):
-            return DOUBT
+            self.event = DOUBT
         if key == ord('r'):
-            return RESET
+            self.event = RESET
         if key == ord('c'):
-            return CONFIG
-        return None
+            self.event = CONFIG
+        end_of_wait.set()
 
 
-class Event:
-    def __init__(self):
-        self.keyboard_wait = None
+class ActionEvent:
+    def __init__(self, end_of_wait: Event):
+        self.button = ButtonEvent(end_of_wait)
         if KEYBOARD:
-            keyboard = EventKeyboard()
-            self.keyboard_wait = keyboard.wait
-        button = EventButton()
-        self.button_wait = button.wait
+            self.keyboard = KeyboardEvent()
 
-    def wait(self):
-        result = self.button_wait()
-        if result is None and self.keyboard_wait:
-            result = self.keyboard_wait()
-        return result
+    def wait(self, end_of_wait: Event):
+        self.button.wait(end_of_wait)
+        if KEYBOARD:
+            self.keyboard.wait(end_of_wait)
+
+    def get_event(self):
+        # Button hat Priorität
+        if self.button.event is not None:
+            logging.debug("event: Button pressed {}".format(self.button.event))
+            return self.button.event
+        if KEYBOARD and self.keyboard.event is not None:
+            logging.debug("event: Keyboard pressed {}".format(self.keyboard.event))
+            return self.keyboard.event
+        return None
