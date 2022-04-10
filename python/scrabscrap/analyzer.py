@@ -17,7 +17,12 @@
 
 import analyzer_classic
 import analyzer_custom
+import logging
+
 from config import WARP, BOARD_LAYOUT
+from vlogging import VisualRecord
+
+cameraLogger = logging.getLogger("cameraLogger")
 
 
 def analyze_picture(image, must_warp=WARP, last_board=None, ignore_board=None, layout=BOARD_LAYOUT):
@@ -35,10 +40,12 @@ def analyze_picture(image, must_warp=WARP, last_board=None, ignore_board=None, l
     """
 
     if layout == 'custom':
+        cameraLogger.info(VisualRecord("Analyzer custom", [image], fmt="png"))
         analyzer = analyzer_custom.AnalyzerCustom()
         board, warped = analyzer.analyze(image=image, must_warp=must_warp, last_board=last_board,
                                          ignore_board=ignore_board)
     else:
+        cameraLogger.info(VisualRecord("Analyzer classic", [image], fmt="png"))
         analyzer = analyzer_classic.AnalyzerClassic()
         board, warped = analyzer.analyze(image=image, must_warp=must_warp, last_board=last_board)
 

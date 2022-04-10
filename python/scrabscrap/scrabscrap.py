@@ -27,7 +27,6 @@ import time
 import cv2
 import imutils
 import numpy as np
-from vlogging import VisualRecord
 
 from action import PAUSE, RESET, QUIT, CONFIG
 from config import SIMULATE, SCREEN, SYSTEM_QUIT, MOTION_DETECTION, MOTION_LEARNING_RATE, MOTION_WAIT, MOTION_AREA, \
@@ -39,7 +38,6 @@ from scrabble import Scrabble
 from state import Start
 
 logging.config.fileConfig(fname='log.conf', disable_existing_loggers=False)
-cameraLogger = logging.getLogger("cameraLogger")
 
 IS_RPI = os.uname()[4].startswith("arm")
 
@@ -246,9 +244,9 @@ class Game:
                 logging.debug("main: start read picture")
                 self.picture = self.cap.picture()
                 logging.debug("main: end read picture")
+            else:
+                self.picture = None
             self.state = self.state.next(action, self.picture, self.scrabble)
-            if action not in (PAUSE, RESET, QUIT, CONFIG):
-                cameraLogger.info(VisualRecord("Live - Action: " + str(action), [self.picture], fmt="png"))
             logging.info("state: {} timer 1={:d} timer 2={:d}".format(str(self.state), self.state.timer1.current(),
                                                                       self.state.timer2.current()))
 
