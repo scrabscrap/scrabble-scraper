@@ -313,9 +313,8 @@ class AlgorithmusTestCase(unittest.TestCase):
     def test_112(self):
         # Testfall 112 - Algorithmus: Anzweifeln ohne Zug
         s = Scrabble()
-        board = {}
         try:
-            s.valid_challenge(board, "Spieler1")
+            s.valid_challenge()
         except Exception:
             pass
         else:
@@ -328,7 +327,7 @@ class AlgorithmusTestCase(unittest.TestCase):
         # H4 FIRNS
         board = {(3, 7): ('F', 75), (4, 7): ('I', 75), (5, 7): ('R', 75), (6, 7): ('N', 75), (7, 7): ('S', 75)}
         s.move(board, "Spieler1")
-        s.invalid_challenge(board, "Spieler2")
+        s.invalid_challenge("Spieler2")
         logging.info(s.print_board(board, {}, {}))
         logging.info(str(s))
         self.assertEqual(2, len(s.game))
@@ -347,7 +346,7 @@ class AlgorithmusTestCase(unittest.TestCase):
         board = {(3, 7): ('F', 75), (4, 7): ('I', 75), (5, 7): ('R', 75), (6, 7): ('N', 75), (7, 7): ('S', 75)}
         s.move(board, "Spieler1")
         board = {}
-        s.valid_challenge(board, "Spieler2")
+        s.valid_challenge()
         logging.info(s.print_board(board, {}, {}))
         logging.info(str(s))
         self.assertEqual(2, len(s.game))
@@ -369,7 +368,7 @@ class AlgorithmusTestCase(unittest.TestCase):
         board = {(3, 7): ('F', 75), (4, 7): ('I', 75), (5, 7): ('R', 75), (6, 7): ('N', 75), (7, 7): ('S', 75),
                  (4, 6): ('V', 75), (4, 8): ('T', 75), (4, 9): ('E', 75), (4, 10): ('N', 75)}
         s.move(board, "Spieler2")
-        s.invalid_challenge(board, "Spieler1")
+        s.invalid_challenge("Spieler1")
         logging.info(s.print_board(board, {}, {}))
         logging.info(str(s))
         self.assertEqual(3, len(s.game))

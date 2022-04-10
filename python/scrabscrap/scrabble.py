@@ -467,14 +467,14 @@ class Scrabble:
         self.game.append((None, new_board, move, removed_tiles, changed_tiles))
         logging.info("scrabble: move - time: {}".format(datetime.datetime.now() - start))
 
-    def valid_challenge(self, new_board, nickname):
+    def valid_challenge(self):
         start = datetime.datetime.now()
         if len(self.game) < 1:
             raise Exception("anzweifeln: kann nicht als erster Zug verwendet werden")
         # angezweifelter Zug
         last_move = self.game[-1][self.DICT_MOVE]
-        if last_move.type == MoveType.withdraw:
-            logging.info("doppelte correct_challenge - time: {}".format(datetime.datetime.now() - start))
+        if last_move.type not in (MoveType.regular, MoveType.challenge_bonus):
+            logging.info("scrabble: double valid_challenge - time: {}".format(datetime.datetime.now() - start))
             return
         # Zustand des Bretts vor dem letzten Zug (vor dem ersten Zug leer)
         last_board = {} if len(self.game) < 2 else self.game[-2][self.DICT_BOARD]
@@ -488,10 +488,14 @@ class Scrabble:
         self.game.append((None, new_board, move, removed_tiles, changed_tiles))
         logging.info("scrabble: challenge - time: {}".format(datetime.datetime.now() - start))
 
-    def invalid_challenge(self, new_board, nickname):
+    def invalid_challenge(self, nickname):
         start = datetime.datetime.now()
         if len(self.game) < 1:
             raise Exception("anzweifeln: kann nicht als erster Zug verwendet werden")
+        last_move = self.game[-1][self.DICT_MOVE]
+        if last_move.type not in (MoveType.regular, MoveType.challenge_bonus):
+            logging.info("scrabble: invalid_challenge not allowed - time: {}".format(datetime.datetime.now() - start))
+            return
         last_board = self.game[-1][self.DICT_BOARD]
         logging.debug("scrabble: analyse invalid challenge")
         move = Move(last_board.copy(), nickname)
@@ -499,7 +503,7 @@ class Scrabble:
         move.score = -MALUS_DOUBT
         move.sum = self.get_score(nickname) - MALUS_DOUBT
         move.word = ""
-        self.game.append((None, new_board, move, {}, {}))
+        self.game.append((None, last_board, move, {}, {}))
         logging.info("scrabble: invalid_challenge - time: {}".format(datetime.datetime.now() - start))
 
     def reset(self):
