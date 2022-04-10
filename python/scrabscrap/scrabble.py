@@ -14,10 +14,9 @@
  You should have received a copy of the GNU General Public License 
  along with this program. If not, see <http://www.gnu.org/licenses/>.
 """
-
+import datetime
 import logging
 import re
-import time
 from enum import Enum
 
 from board import board, tiles
@@ -445,7 +444,7 @@ class Scrabble:
                     x += 1
             return vertical, (minx, miny), _word
 
-        start = time.time()
+        start = datetime.datetime.now()
         if len(new_board) == 1 and new_board[(7, 7)][0] == '_':
             new_board = {}
         new_board, new_tiles, removed_tiles, changed_tiles = self._prepare_board(new_board)
@@ -466,16 +465,16 @@ class Scrabble:
                 move.sum = self.get_score(nickname)
                 move.score = -1
         self.game.append((None, new_board, move, removed_tiles, changed_tiles))
-        logging.info("move - time: {:.2f}".format(time.time() - start))
+        logging.info("scrabble: move - time: {}".format(datetime.datetime.now() - start))
 
     def valid_challenge(self, new_board, nickname):
-        start = time.time()
+        start = datetime.datetime.now()
         if len(self.game) < 1:
             raise Exception("anzweifeln: kann nicht als erster Zug verwendet werden")
         # angezweifelter Zug
         last_move = self.game[-1][self.DICT_MOVE]
         if last_move.type == MoveType.withdraw:
-            logging.info("doppelte correct_challenge - time: {:.2f}".format(time.time() - start))
+            logging.info("doppelte correct_challenge - time: {}".format(datetime.datetime.now() - start))
             return
         # Zustand des Bretts vor dem letzten Zug (vor dem ersten Zug leer)
         last_board = {} if len(self.game) < 2 else self.game[-2][self.DICT_BOARD]
@@ -487,24 +486,24 @@ class Scrabble:
         move.word = last_move.word
         move.sum = last_move.sum - last_move.score
         self.game.append((None, new_board, move, removed_tiles, changed_tiles))
-        logging.info("correct_challenge - time: {:.2f}".format(time.time() - start))
+        logging.info("scrabble: challenge - time: {}".format(datetime.datetime.now() - start))
 
     def invalid_challenge(self, new_board, nickname):
-        start = time.time()
+        start = datetime.datetime.now()
         if len(self.game) < 1:
             raise Exception("anzweifeln: kann nicht als erster Zug verwendet werden")
         last_board = self.game[-1][self.DICT_BOARD]
-        logging.debug("falsches anzweifeln")
+        logging.debug("scrabble: analyse invalid challenge")
         move = Move(last_board.copy(), nickname)
         move.type = MoveType.challenge_bonus
         move.score = -MALUS_DOUBT
         move.sum = self.get_score(nickname) - MALUS_DOUBT
         move.word = ""
         self.game.append((None, new_board, move, {}, {}))
-        logging.info("wrong_challenge - time: {:.2f}".format(time.time() - start))
+        logging.info("scrabble: invalid_challenge - time: {}".format(datetime.datetime.now() - start))
 
     def reset(self):
         self.game.clear()
         self.header.clear()
         self.player = ["Spieler1", "Spieler2"]
-        logging.info("scrabble reset")
+        logging.info("scrabble: reset game")

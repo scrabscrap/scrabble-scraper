@@ -265,6 +265,7 @@ class AnalyzerCustom:
         self.gray = cv2.cvtColor(self.warped, cv2.COLOR_BGR2GRAY)
 
         set_of_tiles = self._prepare_grid_image(self.warped)
+        logging.debug("analyze: time prepare grid image: {}".format(datetime.datetime.now() - _start))
 
         q = queue.Queue(0)
         for _ in range(WORKERS):
@@ -280,5 +281,5 @@ class AnalyzerCustom:
             _mark = overlay_grid(self.warped)
             _mark = overlay_tiles(_mark, board=self.board)
             visualLogger.debug(VisualRecord("marked", [_mark], fmt="jpg"))
-        logging.info("timer analyze: {} sec".format(datetime.datetime.now() - _start))
+        logging.info("analyze: time {}".format(datetime.datetime.now() - _start))
         return self.board, self.warped

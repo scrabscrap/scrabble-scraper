@@ -203,7 +203,7 @@ class Game:
             self.cap.cnt = 0
         while str(self.state) != 'Quit':
             if str(self.state) == 'Start':
-                logging.info('start the game with 1/2')
+                logging.info('main: start the game with 1/2')
             elif str(self.state) == 'Names':
                 self.state.timer1.message('    ')
                 self.state.timer2.message('    ')
@@ -243,7 +243,9 @@ class Game:
                         break
             # bei diesen action muss kein Bild aufgenommen werden
             if action not in (PAUSE, RESET, QUIT, CONFIG):
+                logging.debug("main: start read picture")
                 self.picture = self.cap.picture()
+                logging.debug("main: end read picture")
             self.state = self.state.next(action, self.picture, self.scrabble)
             if action not in (PAUSE, RESET, QUIT, CONFIG):
                 cameraLogger.info(VisualRecord("Live - Action: " + str(action), [self.picture], fmt="png"))
@@ -252,18 +254,18 @@ class Game:
 
         led.led_off()
         if SYSTEM_QUIT == 'reboot':
-            logging.info("reboot")
+            logging.info("main: reboot")
             self.state.timer1.message("  RE")
             self.state.timer2.message("BOOT")
             time.sleep(2)
             os.system('sudo reboot')
         elif SYSTEM_QUIT == 'shutdown':
-            logging.info("shutdown")
+            logging.info("main: shutdown")
             self.state.timer1.message("SHUT")
             self.state.timer2.message("DOWN")
             time.sleep(2)
             os.system('sudo poweroff')
-        logging.info("exit app")
+        logging.info("main: exit app")
         self.state.timer1.message("END ")
         self.state.timer2.message("APP ")
         time.sleep(2)

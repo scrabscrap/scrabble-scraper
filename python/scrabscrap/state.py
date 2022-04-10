@@ -76,21 +76,21 @@ class Start(State):
             led.led_off()
             self.scrabble_queue.put(
                 ScrabbleOp("reset", None, 0, _scrabble, [self.timer1.current(), self.timer2.current()]))
-            logging.debug("reset der Anwendung")
+            logging.debug("App reset")
             return Reset()
         if action == QUIT:
             self.timer1.message(" APP")
             self.timer2.message("END ")
             self.scrabble_queue.put(
                 ScrabbleOp("quit", None, 0, _scrabble, [self.timer1.current(), self.timer2.current()]))
-            logging.debug("quit der Anwendung")
+            logging.debug("App quit")
             return Quit()
         if action == CONFIG:
             self.timer1.message("CFG ")
             self.timer2.message("BOOT")
             self.scrabble_queue.put(
                 ScrabbleOp("quit", None, 0, _scrabble, [self.timer1.current(), self.timer2.current()]))
-            logging.debug("starte config")
+            logging.debug("start config")
             return Config()
         return self
 
@@ -235,7 +235,7 @@ class D1(State):
             logging.debug("invalid challenge (next P1)")
             return P1(" -10")
         if action == PLAYER1:
-            logging.debug("correct challenge (next D1P1)")
+            logging.debug("valid challenge (next D1P1)")
             return D1P1()
         if action == PAUSE:
             logging.debug("cancel challenge (next P1)")
@@ -265,7 +265,7 @@ class D1P1(State):
             return S1()
         if action == DOUBT:
             self.timer1.fill_display()
-            logging.debug("cancel correct challenge (next D1)")
+            logging.debug("cancel valid challenge (next D1)")
             return D1()
         return self
 

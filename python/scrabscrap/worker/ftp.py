@@ -16,6 +16,7 @@
 """
 
 import configparser
+import datetime
 import ftplib
 import logging
 import os
@@ -47,9 +48,11 @@ class WorkerFtp(threading.Thread):
 
     def __store_move(self, move):
         if self.ftp_server is None:
-            logging.warning("ftp server not configured")
+            logging.warning("ftp: server not configured")
             return
         try:
+            _start = datetime.datetime.now()
+            logging.info("ftp: start upload to ftp-server")
             session = ftplib.FTP(self.ftp_server, self.ftp_user, self.ftp_pass)
             file = open(WEB_PATH + "data-" + str(move) + ".json", 'rb')  # file to send
             session.storbinary("STOR data-" + str(move) + ".json", file)  # send the file
@@ -61,28 +64,32 @@ class WorkerFtp(threading.Thread):
             session.storbinary("STOR status.json", file)  # send the file
             file.close()  # close file and FTP
             session.quit()
-            logging.info("upload to ftp-server:" + self.ftp_server)
+            logging.info("ftp: end upload to ftp-server: {} {}".format(self.ftp_server,
+                                                                       datetime.datetime.now() - _start))
         except Exception as e:
-            logging.warning("ftp upload failure" + str(e))
+            logging.warning("ftp: upload failure" + str(e))
 
     def __store_zip(self, filename):
         if self.ftp_server is None:
-            logging.warning("ftp server not configured")
+            logging.warning("ftp: server not configured")
             return
-        logging.info("transfer zip file to ftp server {}".format(self.ftp_server))
         try:
+            _start = datetime.datetime.now()
+            logging.info("ftp: start transfer zip file to ftp server")
             session = ftplib.FTP(self.ftp_server, self.ftp_user, self.ftp_pass)
             file = open(WEB_PATH + filename + ".zip", 'rb')  # file to send
             session.storbinary("STOR " + filename + ".zip", file)  # send the file
             file.close()  # close file and FTP
-            logging.info("delete data files from ftp server")
+            logging.info("ftp: delete data files from ftp server")
             files = session.nlst()
             for i in files:
                 if i.startswith("data-"):
                     session.delete(i)  # delete (not status.json, *.zip)
             session.quit()
+            logging.info("ftp: end upload to ftp-server: {} {}".format(self.ftp_server,
+                                                                       datetime.datetime.now() - _start))
         except Exception as e:
-            logging.warning("ftp upload failure" + str(e))
+            logging.warning("ftp: upload failure" + str(e))
 
     def run(self):
         while 1:
@@ -100,4 +107,4 @@ class WorkerFtp(threading.Thread):
                 self.__store_zip(filename)
 
             self.__queue.task_done()
-            logging.info("{} ftp finished".format(op))
+            logging.info("ftp: {} tasks done".format(op))
