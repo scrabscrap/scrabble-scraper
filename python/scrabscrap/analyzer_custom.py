@@ -16,10 +16,10 @@
 """
 
 import configparser
+import datetime
 import logging
 import logging.config
 import queue
-import time
 
 import cv2
 import imutils
@@ -234,26 +234,29 @@ class AnalyzerCustom:
             return {}
         return set_of_tiles
 
-    def _mark_grid(self, _queue, _coord, _candidat):
+    def _mark_grid(self, _queue, _coord, _candidat, _ignore):
         (_c, _r) = _coord
         if _coord not in _candidat:
             return
         _candidat.remove(_coord)
-        _y = get_y_position(_r)
-        _x = get_x_position(_c)
-        _gray = self.gray[_y - 10:_y + GRID_H + 10, _x - 10:_x + GRID_W + 10]
-        _queue.put((_coord, _gray, self.board), block=False)
-        self._mark_grid(_queue, (_c + 1, _r), _candidat)
-        self._mark_grid(_queue, (_c - 1, _r), _candidat)
-        self._mark_grid(_queue, (_c, _r + 1), _candidat)
-        self._mark_grid(_queue, (_c, _r - 1), _candidat)
+        if _coord not in _ignore:
+            _y = get_y_position(_r)
+            _x = get_x_position(_c)
+            _gray = self.gray[_y - 10:_y + GRID_H + 10, _x - 10:_x + GRID_W + 10]
+            _queue.put((_coord, _gray, self.board), block=False)
+        self._mark_grid(_queue, (_c + 1, _r), _candidat, _ignore)
+        self._mark_grid(_queue, (_c - 1, _r), _candidat, _ignore)
+        self._mark_grid(_queue, (_c, _r + 1), _candidat, _ignore)
+        self._mark_grid(_queue, (_c, _r - 1), _candidat, _ignore)
 
-    def analyze(self, image=None, must_warp=True, last_board=None):
-        _start = time.time()
+    def analyze(self, image=None, must_warp=True, last_board=None, ignore_board=None):
+        _start = datetime.datetime.now()
         self.img = image
         if self.img is None:
             raise ValueError("img darf nicht None sein")
         self.board = last_board if last_board is not None else {}
+        if ignore_board is None:
+            ignore_board = {}
         if len(self.board) < 1:
             global last_warp
             last_warp = None
@@ -267,7 +270,7 @@ class AnalyzerCustom:
         for _ in range(WORKERS):
             WorkerCustom(q).start()  # start a worker
 
-        self._mark_grid(q, (7, 7), set_of_tiles.copy())
+        self._mark_grid(q, (7, 7), set_of_tiles.copy(), ignore_board)
         for _ in range(WORKERS):
             q.put(None)  # add end-of-queue markers
 
@@ -277,5 +280,5 @@ class AnalyzerCustom:
             _mark = overlay_grid(self.warped)
             _mark = overlay_tiles(_mark, board=self.board)
             visualLogger.debug(VisualRecord("marked", [_mark], fmt="jpg"))
-        logging.info("timer analyze: {:.2f} sec".format(time.time() - _start))
+        logging.info("timer analyze: {} sec".format(datetime.datetime.now() - _start))
         return self.board, self.warped

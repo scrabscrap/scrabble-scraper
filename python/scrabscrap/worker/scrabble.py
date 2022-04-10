@@ -66,7 +66,9 @@ class WorkerScrabble(threading.Thread):
                 try:
                     _last_board = dict(item.scrabble.game[-1][item.scrabble.DICT_BOARD]) if len(
                         item.scrabble.game) > 0 else None
-                    _board, warped = analyze_picture(item.img, last_board=_last_board)
+                    _ignore_board = dict(item.scrabble.game[-3][item.scrabble.DICT_BOARD]) if len(
+                        item.scrabble.game) > 2 else None
+                    _board, warped = analyze_picture(item.img, last_board=_last_board, ignore_board=_ignore_board)
                     item.img = warped
                     item.scrabble.move(_board, item.scrabble.player[item.active])
                     self.__write_move(item)

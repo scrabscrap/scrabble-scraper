@@ -20,7 +20,7 @@ import analyzer_custom
 from config import WARP, BOARD_LAYOUT
 
 
-def analyze_picture(image, must_warp=WARP, last_board=None, layout=BOARD_LAYOUT):
+def analyze_picture(image, must_warp=WARP, last_board=None, ignore_board=None, layout=BOARD_LAYOUT):
     """
     Analysiere das Bild. Hierzu wird die Spielfeldfläche in ein Gitter unterteilt. Jedes Gitterelement
     wird dann auf die mittlere Farbe geprüft und falls damit ein Spielstein erkannt wurde, wird hier ein
@@ -28,14 +28,16 @@ def analyze_picture(image, must_warp=WARP, last_board=None, layout=BOARD_LAYOUT)
     :param image: zu analysierendes Bild
     :param must_warp: falls ein warp des Bildes durchgeführt werden muss - ohne Angabe wird in der Wert aus
     scrabble.ini genommen
-    :param last_board: Der Inhalt des letzten Boards - alle Steine mit einem Score > 92 werden vorrangig behalten
+    :param last_board: Der Inhalt des letzten Boards - alle Steine mit einem Score > 90 werden vorrangig behalten
+    :param ignore_board: Der Inhalt des drittletzten Boards - die Steine werden bei dem Matching ignoriert
     :param layout: Welches Layout soll verwendet werden (custom, classic) - Default per ini-Datei
     :return: dict(board)
     """
 
     if layout == 'custom':
         analyzer = analyzer_custom.AnalyzerCustom()
-        board, warped = analyzer.analyze(image=image, must_warp=must_warp, last_board=last_board)
+        board, warped = analyzer.analyze(image=image, must_warp=must_warp, last_board=last_board,
+                                         ignore_board=ignore_board)
     else:
         analyzer = analyzer_classic.AnalyzerClassic()
         board, warped = analyzer.analyze(image=image, must_warp=must_warp, last_board=last_board)
