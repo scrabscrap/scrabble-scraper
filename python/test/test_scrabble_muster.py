@@ -24,6 +24,8 @@ import os
 from analyzer import analyze_picture
 from scrabble import Scrabble
 
+TEST_DIR = os.path.dirname(__file__)
+
 logging.config.fileConfig(fname=os.path.dirname(os.path.abspath(__file__)) + '/test_log.conf', disable_existing_loggers=True)
 # kein FTP Upload beim Test
 config.FTP = False
@@ -36,7 +38,7 @@ class ScrabbleMusterTestCase(unittest.TestCase):
 
     def test_names(self):
 
-        files = ["test/board-neu/board-04.png"]
+        files = [TEST_DIR + "/board-neu/board-04.png"]
         last_board = None
         for f in files:
             img = cv2.imread(f)
@@ -64,14 +66,14 @@ class ScrabbleMusterTestCase(unittest.TestCase):
 
     def test_err_images(self):
 
-        files = ["test/board-neu/err-01.png", "test/board-neu/err-02.png", "test/board-neu/err-03.png",
-                    "test/board-neu/err-04.png", "test/board-neu/err-05.png", "test/board-neu/err-06.png",
-                    "test/board-neu/err-07.png", "test/board-neu/err-08.png", "test/board-neu/err-09.png",
-                    "test/board-neu/err-10.png", "test/board-neu/err-11.png", "test/board-neu/err-12.png",
-                    "test/board-neu/err-13.png", "test/board-neu/err-14.png", "test/board-neu/err-15.png",
-                    "test/board-neu/err-16.png", "test/board-neu/err-17.png", "test/board-neu/err-18.png",
-                    "test/board-neu/err-19.png", "test/board-neu/err-20.png", "test/board-neu/err-21.png",
-                    "test/board-neu/err-22.png", "test/board-neu/err-23.png", "test/board-neu/err-24.png"
+        files = [TEST_DIR + "/board-neu/err-01.png", TEST_DIR + "/board-neu/err-02.png", TEST_DIR + "/board-neu/err-03.png",
+                    TEST_DIR + "/board-neu/err-04.png", TEST_DIR + "/board-neu/err-05.png", TEST_DIR + "/board-neu/err-06.png",
+                    TEST_DIR + "/board-neu/err-07.png", TEST_DIR + "/board-neu/err-08.png", TEST_DIR + "/board-neu/err-09.png",
+                    TEST_DIR + "/board-neu/err-10.png", TEST_DIR + "/board-neu/err-11.png", TEST_DIR + "/board-neu/err-12.png",
+                    TEST_DIR + "/board-neu/err-13.png", TEST_DIR + "/board-neu/err-14.png", TEST_DIR + "/board-neu/err-15.png",
+                    TEST_DIR + "/board-neu/err-16.png", TEST_DIR + "/board-neu/err-17.png", TEST_DIR + "/board-neu/err-18.png",
+                    TEST_DIR + "/board-neu/err-19.png", TEST_DIR + "/board-neu/err-20.png", TEST_DIR + "/board-neu/err-21.png",
+                    TEST_DIR + "/board-neu/err-22.png", TEST_DIR + "/board-neu/err-23.png", TEST_DIR + "/board-neu/err-24.png"
                     ]
         last_board = None
         for f in files:
@@ -92,8 +94,8 @@ class ScrabbleMusterTestCase(unittest.TestCase):
 
     def test_new_images(self):
 
-        files = ["test/board-neu/board-00.png", "test/board-neu/board-01.png",
-                    "test/board-neu/board-03.png"]
+        files = [TEST_DIR + "/board-neu/board-00.png", TEST_DIR + "/board-neu/board-01.png",
+                    TEST_DIR + "/board-neu/board-03.png"]
 
         for f in files:
             img = cv2.imread(f)

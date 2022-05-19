@@ -24,6 +24,8 @@ import os
 
 from scrabble import Scrabble
 
+TEST_DIR = os.path.dirname(__file__)
+
 # import line_profiler
 # import atexit
 # profile = line_profiler.LineProfiler()
@@ -50,7 +52,7 @@ class ScrabbleGameTestCase(unittest.TestCase):
         game_logger.info('')
         zustand = Start()
         for i in range(0, 26):
-            img = cv2.imread("test/spiel-13/board-{:02d}.png".format(i))
+            img = cv2.imread(TEST_DIR + "/spiel-13/board-{:02d}.png".format(i))
             logging.debug(
                 "State {} Spieler: {:d}/{} read board-{:02d}.png".format(str(zustand), (i % 2), s.player[(i % 2)], i))
             if (i % 2) == 0:
@@ -74,7 +76,7 @@ class ScrabbleGameTestCase(unittest.TestCase):
         game_logger.info('')
         zustand = Start()
         for i in range(0, 21):
-            img = cv2.imread("test/spiel-12/board-{:02d}.png".format(i))
+            img = cv2.imread(TEST_DIR + "/spiel-12/board-{:02d}.png".format(i))
             logging.debug(
                 "State {} Spieler: {:d}/{} read board-{:02d}.png".format(str(zustand), (i % 2), s.player[(i % 2)], i))
             if (i % 2) == 0:
@@ -99,7 +101,7 @@ class ScrabbleGameTestCase(unittest.TestCase):
         game_logger.info('')
         zustand = Start()
         for i in range(0, 28):
-            img = cv2.imread("test/spiel-14/board-{:02d}.png".format(i))
+            img = cv2.imread(TEST_DIR + "/spiel-14/board-{:02d}.png".format(i))
             logging.debug(
                 "State {} Spieler: {:d}/{} read board-{:02d}.png".format(str(zustand), (i % 2), s.player[(i % 2)], i))
             if (i % 2) == 0:
@@ -124,7 +126,7 @@ class ScrabbleGameTestCase(unittest.TestCase):
         game_logger.info('')
         zustand = Start()
         for i in range(0, 16):
-            img = cv2.imread("test/spiel-15/board-{:02d}.png".format(i))
+            img = cv2.imread(TEST_DIR + "/spiel-15/board-{:02d}.png".format(i))
             logging.debug(
                 "State {} Spieler: {:d}/{} read board-{:02d}.png".format(str(zustand), (i % 2), s.player[(i % 2)], i))
             if (i % 2) == 0:
@@ -133,14 +135,14 @@ class ScrabbleGameTestCase(unittest.TestCase):
                 action = PLAYER1
             zustand = zustand.next(action, img, s)
 
-        img = cv2.imread("test/spiel-15/board-{:02d}.png".format(16))
+        img = cv2.imread(TEST_DIR + "/spiel-15/board-{:02d}.png".format(16))
         zustand = zustand.next(PAUSE, img, s)
         zustand = zustand.next(DOUBT, img, s)
         zustand = zustand.next(PLAYER2, img, s)
         zustand = zustand.next(PAUSE, img, s)
 
         for i in range(16, 19):
-            img = cv2.imread("test/spiel-15/board-{:02d}.png".format(i))
+            img = cv2.imread(TEST_DIR + "/spiel-15/board-{:02d}.png".format(i))
             logging.debug(
                 "State {} Spieler: {:d}/{} read board-{:02d}.png".format(str(zustand), (i % 2), s.player[(i % 2)], i))
             if (i % 2) == 0:
@@ -149,14 +151,14 @@ class ScrabbleGameTestCase(unittest.TestCase):
                 action = PLAYER2
             zustand = zustand.next(action, img, s)
 
-        img = cv2.imread("test/spiel-15/board-{:02d}.png".format(19))
+        img = cv2.imread(TEST_DIR + "/spiel-15/board-{:02d}.png".format(19))
         zustand = zustand.next(PAUSE, img, s)
         zustand = zustand.next(DOUBT, img, s)
         zustand = zustand.next(PLAYER2, img, s)
         zustand = zustand.next(PAUSE, img, s)
 
         for i in range(19, 31):
-            img = cv2.imread("test/spiel-15/board-{:02d}.png".format(i))
+            img = cv2.imread(TEST_DIR + "/spiel-15/board-{:02d}.png".format(i))
             logging.debug(
                 "State {} Spieler: {:d}/{} read board-{:02d}.png".format(str(zustand), (i % 2), s.player[(i % 2)], i))
             if (i % 2) == 0:
