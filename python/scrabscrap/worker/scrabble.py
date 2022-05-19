@@ -196,6 +196,8 @@ class WorkerScrabble(threading.Thread):
                 for i in range(1, len(item.scrabble.game) + 1):
                     _zip.write(WEB_PATH + "image-" + str(i) + ".jpg")
                     _zip.write(WEB_PATH + "data-" + str(i) + ".json")
+                if os.path.exists(WEB_PATH+"../log/messages.log"):
+                    _zip.write(WEB_PATH+"../log/messages.log")
             if FTP and self.ftp_queue is not None:
                 self.ftp_queue.put(('zip', None, filename))
                 self.ftp_queue.put(None)
