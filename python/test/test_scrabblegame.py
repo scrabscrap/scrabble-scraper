@@ -31,7 +31,8 @@ TEST_DIR = os.path.dirname(__file__)
 # profile = line_profiler.LineProfiler()
 # atexit.register(profile.print_stats)
 
-logging.config.fileConfig(fname=os.path.dirname(os.path.abspath(__file__)) + '/test_log.conf', disable_existing_loggers=False)
+logging.config.fileConfig(fname=os.path.dirname(os.path.abspath(__file__)) + '/test_log.conf',
+                          disable_existing_loggers=False)
 game_logger = logging.getLogger('boardLogger')
 # kein FTP Upload beim Test
 config.FTP = False
@@ -52,9 +53,8 @@ class ScrabbleGameTestCase(unittest.TestCase):
         game_logger.info('')
         zustand = Start()
         for i in range(0, 26):
-            img = cv2.imread(TEST_DIR + "/spiel-13/board-{:02d}.png".format(i))
-            logging.debug(
-                "State {} Spieler: {:d}/{} read board-{:02d}.png".format(str(zustand), (i % 2), s.player[(i % 2)], i))
+            img = cv2.imread(f"{TEST_DIR}/spiel-13/board-{i:02d}.png")
+            logging.debug(f"State {zustand} Spieler: {(i % 2)}/{s.player[(i % 2)]} read board-{i:02d}.png")
             if (i % 2) == 0:
                 action = PLAYER2
             else:
@@ -76,9 +76,8 @@ class ScrabbleGameTestCase(unittest.TestCase):
         game_logger.info('')
         zustand = Start()
         for i in range(0, 21):
-            img = cv2.imread(TEST_DIR + "/spiel-12/board-{:02d}.png".format(i))
-            logging.debug(
-                "State {} Spieler: {:d}/{} read board-{:02d}.png".format(str(zustand), (i % 2), s.player[(i % 2)], i))
+            img = cv2.imread(f"{TEST_DIR}/spiel-12/board-{i:02d}.png")
+            logging.debug(f"State {zustand} Spieler: {(i % 2)}/{s.player[(i % 2)]} read board-{i:02d}.png")
             if (i % 2) == 0:
                 action = PLAYER2
             else:
@@ -101,9 +100,8 @@ class ScrabbleGameTestCase(unittest.TestCase):
         game_logger.info('')
         zustand = Start()
         for i in range(0, 28):
-            img = cv2.imread(TEST_DIR + "/spiel-14/board-{:02d}.png".format(i))
-            logging.debug(
-                "State {} Spieler: {:d}/{} read board-{:02d}.png".format(str(zustand), (i % 2), s.player[(i % 2)], i))
+            img = cv2.imread(f"{TEST_DIR}/spiel-14/board-{i:02d}.png")
+            logging.debug(f"State {zustand} Spieler: {(i % 2)}/{s.player[(i % 2)]} read board-{i:02d}.png")
             if (i % 2) == 0:
                 action = PLAYER2
             else:
@@ -126,41 +124,38 @@ class ScrabbleGameTestCase(unittest.TestCase):
         game_logger.info('')
         zustand = Start()
         for i in range(0, 16):
-            img = cv2.imread(TEST_DIR + "/spiel-15/board-{:02d}.png".format(i))
-            logging.debug(
-                "State {} Spieler: {:d}/{} read board-{:02d}.png".format(str(zustand), (i % 2), s.player[(i % 2)], i))
+            img = cv2.imread(f"{TEST_DIR}/spiel-15/board-{i:02d}.png")
+            logging.debug(f"State {zustand} Spieler: {(i % 2)}/{s.player[(i % 2)]} read board-{i:02d}.png")
             if (i % 2) == 0:
                 action = PLAYER2
             else:
                 action = PLAYER1
             zustand = zustand.next(action, img, s)
 
-        img = cv2.imread(TEST_DIR + "/spiel-15/board-{:02d}.png".format(16))
+        img = cv2.imread(f"{TEST_DIR}/spiel-15/board-16.png")
         zustand = zustand.next(PAUSE, img, s)
         zustand = zustand.next(DOUBT, img, s)
         zustand = zustand.next(PLAYER2, img, s)
         zustand = zustand.next(PAUSE, img, s)
 
         for i in range(16, 19):
-            img = cv2.imread(TEST_DIR + "/spiel-15/board-{:02d}.png".format(i))
-            logging.debug(
-                "State {} Spieler: {:d}/{} read board-{:02d}.png".format(str(zustand), (i % 2), s.player[(i % 2)], i))
+            img = cv2.imread(f"{TEST_DIR}/spiel-15/board-{i:02d}.png")
+            logging.debug(f"State {zustand} Spieler: {(i % 2)}/{s.player[(i % 2)]} read board-{i:02d}.png")
             if (i % 2) == 0:
                 action = PLAYER1
             else:
                 action = PLAYER2
             zustand = zustand.next(action, img, s)
 
-        img = cv2.imread(TEST_DIR + "/spiel-15/board-{:02d}.png".format(19))
+        img = cv2.imread(f"{TEST_DIR}/spiel-15/board-19.png")
         zustand = zustand.next(PAUSE, img, s)
         zustand = zustand.next(DOUBT, img, s)
         zustand = zustand.next(PLAYER2, img, s)
         zustand = zustand.next(PAUSE, img, s)
 
         for i in range(19, 31):
-            img = cv2.imread(TEST_DIR + "/spiel-15/board-{:02d}.png".format(i))
-            logging.debug(
-                "State {} Spieler: {:d}/{} read board-{:02d}.png".format(str(zustand), (i % 2), s.player[(i % 2)], i))
+            img = cv2.imread(f"{TEST_DIR}/spiel-15/board-{i:02d}.png")
+            logging.debug(f"State {zustand} Spieler: {(i % 2)}/{s.player[(i % 2)]} read board-{i:02d}.png")
             if (i % 2) == 0:
                 action = PLAYER2
             else:

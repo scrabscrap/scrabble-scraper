@@ -65,7 +65,7 @@ class Game:
         try:
             self.cap = vs.get_video()
         except Exception as e:
-            logging.error("(camera) Exception {}".format(e))
+            logging.error(f"(camera) Exception {e}")
             self.state.timer1.message("CAM ")
             self.state.timer2.message("ERR ")
             led.led_off()
@@ -117,7 +117,7 @@ class Game:
         # if the contour is too small, ignore it
         if len(cnts) > 0 and cv2.contourArea(cnts[0]) > MOTION_AREA:
             (x, y, w, h) = cv2.boundingRect(cnts[0])
-            cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 1)
+            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 1)
             # if x < 1 or y < 1 or (x+w) > width-1 or (y+h) > (height+1):
             # only motion from outside
             motion = True
@@ -146,7 +146,7 @@ class Game:
         if len(erg2) <= 0:
             erg2 = "Spieler2"
         self.scrabble.player = [erg1, erg2]
-        logging.info("set names {}".format(self.scrabble.player))
+        logging.info(f"set names {self.scrabble.player}")
 
     def reset(self):
         logging.info("(reset) game restart")
@@ -166,7 +166,7 @@ class Game:
         os.execv(sys.executable, argv)
 
     def start_config_server(self):
-        script_dir = os.path.abspath(os.path.dirname(os.path.abspath(__file__))+"/../../script")
+        script_dir = os.path.abspath(os.path.dirname(os.path.abspath(__file__)) + "/../../script")
 
         logging.info("(config) start config server")
         self.state.timer1.message("CFG ")
@@ -193,7 +193,7 @@ class Game:
             self.state.timer1.fill_display()
             self.state.timer2.fill_display()
         except Exception as e:
-            logging.error("cam exception {}".format(e))
+            logging.error(f"cam exception {e}")
             self.state.timer2.message("ERR ")
             time.sleep(30)
 
@@ -228,7 +228,7 @@ class Game:
                             cv2.rectangle(pic, (1, 1), (2, 2), (0, 255, 255), 2)
                         cv2.imshow("Live", pic)
                 except Exception as err:
-                    logging.warning("(read/motion_detection) Exception: {0}".format(err))
+                    logging.warning(f"(read/motion_detection) Exception: {err}")
                 for _ in range(0, 10):  # warte 0.7s auf das nächste Bild, aber nehme action sofort entgegen
                     if action is None:
                         action = self.action_event.wait()
@@ -247,8 +247,8 @@ class Game:
             else:
                 self.picture = None
             self.state = self.state.next(action, self.picture, self.scrabble)
-            logging.info("state: {} timer 1={:d} timer 2={:d}".format(str(self.state), self.state.timer1.current(),
-                                                                      self.state.timer2.current()))
+            logging.info(
+                f"state: {self.state} timer 1={self.state.timer1.current():d} timer 2={self.state.timer2.current():d}")
 
         led.led_off()
         if SYSTEM_QUIT == 'reboot':

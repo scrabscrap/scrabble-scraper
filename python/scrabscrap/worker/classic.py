@@ -49,7 +49,7 @@ class WorkerClassic(threading.Thread):
         else:
             tile, prop = None, 76
         if prop > 90:
-            logging.debug("{}{:2}: tile on board prop > 90 {} ({})".format(chr(ord('A') + col), row + 1, tile, prop))
+            logging.debug(f"{chr(ord('A') + col)}{row + 1:2}: tile on board prop > 90 {tile} ({prop})")
             return _board[(col, row)]
         y = get_y_position(row)
         x = get_x_position(col)
@@ -81,4 +81,4 @@ class WorkerClassic(threading.Thread):
             blank_candidates = item[3]
             tile, prop = self.__find_tile(col, row, img, _board, blank_candidates)
             self.__queue.task_done()
-            logging.debug("{}{:2}: {} ({:2}) task finished".format(chr(ord('A') + col), row + 1, tile, prop))
+            logging.debug(f"{chr(ord('A') + col)}{row + 1:2}: {tile} ({prop:2}) task finished")

@@ -61,7 +61,7 @@ class AnalyzerCustom:
             rect[2][1] = warp['warp']['bottom-right-y']
             rect[3][0] = warp['warp']['bottom-left-x']
             rect[3][1] = warp['warp']['bottom-left-y']
-            logging.debug("warp.ini {}".format(rect))
+            logging.debug(f"warp.ini {rect}")
         else:
             # based on: https://www.pyimagesearch.com/2014/08/25/4-point-opencv-getperspective-transform-example/
             (blue, _, _) = cv2.split(__image.copy())
@@ -99,7 +99,7 @@ class AnalyzerCustom:
             diff = np.diff(pts, axis=1)
             rect[1] = pts[np.argmin(diff)]
             rect[3] = pts[np.argmax(diff)]
-            logging.debug("warp calculation {}".format(rect))
+            logging.debug(f"warp calculation {rect}")
 
             # evtl. auch nur eine Heuristik bzgl. der Abweichungen der Ecken?
             (x1, y1) = rect[0]
@@ -113,7 +113,7 @@ class AnalyzerCustom:
                 else:
                     x = max(x1, x2)
                     rect[0][0] = rect[3][0] = x
-                    logging.warning("korrigiere x auf {}".format(x))
+                    logging.warning(f"korrigiere x auf {x}")
             if abs(w1 - w2) > 40 or w1 > 1490 or w2 > 1490:
                 if last_warp is not None:
                     rect[1][0] = last_warp[1][0]
@@ -121,7 +121,7 @@ class AnalyzerCustom:
                 else:
                     w = min(w1, w2)
                     rect[1][0] = rect[2][0] = w
-                    logging.warning("korrigiere w auf {}".format(w))
+                    logging.warning(f"korrigiere w auf {w}")
             if abs(y1 - y2) > 40 or y1 < 15 or y2 < 15:
                 if last_warp is not None:
                     rect[0][1] = last_warp[0][1]
@@ -129,7 +129,7 @@ class AnalyzerCustom:
                 else:
                     y = max(y1, y2)
                     rect[0][1] = rect[1][1] = y
-                    logging.warning("korrigiere y auf {}".format(y))
+                    logging.warning(f"korrigiere y auf {y}")
             if abs(h1 - h2) > 40 or h1 > 1490 or h2 > 1490:
                 if last_warp is not None:
                     rect[2][1] = last_warp[2][1]
@@ -137,7 +137,7 @@ class AnalyzerCustom:
                 else:
                     h = min(h1, h2)
                     rect[2][1] = rect[3][1] = h
-                    logging.warning("korrigiere h auf {}".format(h))
+                    logging.warning(f"korrigiere h auf {h}")
 
             # if abs(x1 - x2) > 40 or abs(w1 - w2) > 40 or abs(y1 - y2) > 40 or abs(h1 - h2) > 40:
             #     # or x1 < 15 or y1 < 15 \
@@ -146,7 +146,7 @@ class AnalyzerCustom:
             #         rect = last_warp
             #     else:
             #         logging.error("es kann keine sinnvolle Transformation ermittelt werden")
-            #     logging.warning("korrigiere rest auf {}".format(rect))
+            #     logging.warning(f"korrigiere rest auf {rect}")
             # else:
             last_warp = rect
 
@@ -205,18 +205,18 @@ class AnalyzerCustom:
                 field = kmeans_image[y:y + 12, x:x + 12]
                 a, cnts = np.unique(field, return_counts=True)
                 if a[cnts.argmax()] != 0:
-                    logging.debug("{}{:2}: {} ".format(chr(ord('A') + row), col + 1, cnts))
+                    logging.debug(f"{chr(ord('A') + row)}{col + 1:2}: {cnts} ")
                     set_of_tiles.add((col, row))
 
         if logging.getLogger().isEnabledFor(logging.DEBUG):
-            logging.debug("{}".format(sorted_labels))
-            logging.debug("tiles: {}".format(set_of_tiles))
-            out = "\n {:2} ".format(' ')
+            logging.debug(sorted_labels)
+            logging.debug(f"tiles: {set_of_tiles}")
+            out = "\n    "
             for col in range(0, 15):
-                out += " {:2} ".format(col + 1)
+                out += f" {col + 1:2} "
             out += '\n'
             for row in range(0, 15):
-                out += " {:2} ".format(chr(ord('A') + row))
+                out += f" {chr(ord('A') + row):2} "
                 for col in range(0, 15):
                     if (col, row) in set_of_tiles:
                         out += "  X "
@@ -265,7 +265,7 @@ class AnalyzerCustom:
         self.gray = cv2.cvtColor(self.warped, cv2.COLOR_BGR2GRAY)
 
         set_of_tiles = self._prepare_grid_image(self.warped)
-        logging.debug("analyze: time prepare grid image: {}".format(datetime.datetime.now() - _start))
+        logging.debug(f"analyze: time prepare grid image: {datetime.datetime.now() - _start}")
 
         q = queue.Queue(0)
         for _ in range(WORKERS):
@@ -281,5 +281,5 @@ class AnalyzerCustom:
             _mark = overlay_grid(self.warped)
             _mark = overlay_tiles(_mark, board=self.board)
             visualLogger.debug(VisualRecord("marked", [_mark], fmt="jpg"))
-        logging.info("analyze: time {}".format(datetime.datetime.now() - _start))
+        logging.info(f"analyze: time {datetime.datetime.now() - _start}")
         return self.board, self.warped

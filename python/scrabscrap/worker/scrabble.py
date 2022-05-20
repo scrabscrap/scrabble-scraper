@@ -93,11 +93,8 @@ class WorkerScrabble(threading.Thread):
                 self.__store_game(item)
                 item.scrabble.reset()
             logging.debug("gcg-data:" + str(item.scrabble))
-            logging.info('Score {}={:d} {}={:d}'.format(
-                item.scrabble.player[0],
-                item.scrabble.get_score(item.scrabble.player[0]),
-                item.scrabble.player[1],
-                item.scrabble.get_score(item.scrabble.player[1])))
+            logging.info(f'Score {item.scrabble.player[0]}={item.scrabble.get_score(item.scrabble.player[0]):d}'
+                         f' {item.scrabble.player[1]}={item.scrabble.get_score(item.scrabble.player[1]):d}')
             self.__queue.task_done()
             logging.debug("scrabble task finished")
 
@@ -130,7 +127,7 @@ class WorkerScrabble(threading.Thread):
                 if FTP and self.ftp_queue is not None:
                     self.ftp_queue.put(('move', 0, None))
             except Exception as e:
-                logging.exception("Fehler beim Clean des Spielstandes {}".format(e))
+                logging.exception(f"Fehler beim Clean des Spielstandes {e}")
 
     def __write_move(self, item):
         if WRITE_WEB or FTP:
@@ -171,7 +168,7 @@ class WorkerScrabble(threading.Thread):
                 if FTP and self.ftp_queue is not None:
                     self.ftp_queue.put(('move', zug, None))
             except Exception as e:
-                logging.exception("Fehler beim Speichern des Spielstandes {}".format(e))
+                logging.exception(f"Fehler beim Speichern des Spielstandes {e}")
 
     def __store_game(self, item):
         import uuid
@@ -192,7 +189,7 @@ class WorkerScrabble(threading.Thread):
             f.close()
             with ZipFile(prefix + '.zip', 'w') as _zip:
                 _zip.write(prefix + ".gcg")
-                logging.info("create zip with {:d} files".format(len(item.scrabble.game)))
+                logging.info(f"create zip with {len(item.scrabble.game):d} files")
                 for i in range(1, len(item.scrabble.game) + 1):
                     _zip.write(WEB_PATH + "image-" + str(i) + ".jpg")
                     _zip.write(WEB_PATH + "data-" + str(i) + ".json")
@@ -207,4 +204,4 @@ class WorkerScrabble(threading.Thread):
             os.system('rm ' + WEB_PATH + "data*")
             os.system('rm ' + WEB_PATH + "*.gcg")
         except Exception as e:
-            logging.exception("Fehler beim Speichern des Spieles {}".format(e))
+            logging.exception(f"Fehler beim Speichern des Spieles {e}")

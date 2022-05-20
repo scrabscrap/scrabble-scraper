@@ -26,7 +26,7 @@ try:
     with open(WORK_DIR + '/scrabble.ini', "r") as config_file:
         config.read_file(config_file)
 except Exception as e:
-    logging.exception("INI-Datei kann nicht gelesen werden " + str(e))
+    logging.exception(f"INI-Datei kann nicht gelesen werden {e}")
 
 SIMULATE = config.getboolean('development', 'simulate', fallback=False)
 SIMULATE_PATH = config.get('development', 'simulate_path')

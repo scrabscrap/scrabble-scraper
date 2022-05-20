@@ -148,7 +148,7 @@ class SimulateVideo:
         self.img = cv2.imread(self.formatter.format(self.cnt))
 
     def picture(self):
-        logging.debug("picture {}".format(self.formatter.format(self.cnt)))
+        logging.debug(f"picture {self.formatter.format(self.cnt)}")
         return self.img
 
     def read(self):
@@ -156,7 +156,7 @@ class SimulateVideo:
 
         self.cnt += 1 if os.path.isfile(self.formatter.format(self.cnt + 1)) else 0
         self.img = cv2.imread(self.formatter.format(self.cnt))
-        logging.debug("read {}".format(self.formatter.format(self.cnt)))
+        logging.debug(f"read {self.formatter.format(self.cnt)}")
         return True, cv2.resize(self.img, (384, 384))
 
     def start(self):

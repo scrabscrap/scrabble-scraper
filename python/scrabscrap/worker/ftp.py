@@ -44,7 +44,7 @@ class WorkerFtp(threading.Thread):
                 self.ftp_user = ftp['ftp']['ftp-user']
                 self.ftp_pass = ftp['ftp']['ftp-password']
         except Exception as e:
-            logging.exception("can not read ftp-secret.ini {}".format(str(e)))
+            logging.exception(f"can not read ftp-secret.ini {e}")
 
     def __store_move(self, move):
         if self.ftp_server is None:
@@ -64,10 +64,9 @@ class WorkerFtp(threading.Thread):
             session.storbinary("STOR status.json", file)  # send the file
             file.close()  # close file and FTP
             session.quit()
-            logging.info("ftp: end upload to ftp-server: {} {}".format(self.ftp_server,
-                                                                       datetime.datetime.now() - _start))
+            logging.info(f"ftp: end upload to ftp-server: {self.ftp_server} {datetime.datetime.now() - _start}")
         except Exception as e:
-            logging.warning("ftp: upload failure" + str(e))
+            logging.warning(f"ftp: upload failure {e}")
 
     def __store_zip(self, filename):
         if self.ftp_server is None:
@@ -86,10 +85,9 @@ class WorkerFtp(threading.Thread):
                 if i.startswith("data-"):
                     session.delete(i)  # delete (not status.json, *.zip)
             session.quit()
-            logging.info("ftp: end upload to ftp-server: {} {}".format(self.ftp_server,
-                                                                       datetime.datetime.now() - _start))
+            logging.info(f"ftp: end upload to ftp-server: {self.ftp_server} {datetime.datetime.now() - _start}")
         except Exception as e:
-            logging.warning("ftp: upload failure" + str(e))
+            logging.warning(f"ftp: upload failure {e}")
 
     def run(self):
         while 1:
@@ -107,4 +105,4 @@ class WorkerFtp(threading.Thread):
                 self.__store_zip(filename)
 
             self.__queue.task_done()
-            logging.info("ftp: {} tasks done".format(op))
+            logging.info(f"ftp: {op} tasks done")

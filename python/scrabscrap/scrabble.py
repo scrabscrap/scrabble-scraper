@@ -93,7 +93,7 @@ class Move:
             result += "(time) "
         elif self.type == MoveType.unknown:
             result += "(unknown) "
-        result += "{:+d} {:+d}".format(self.score, self.sum)
+        result += f"{self.score:+d} {self.sum:+d}"
         return result
 
     def set_from_string(self, line):
@@ -280,10 +280,10 @@ class Scrabble:
         result = "Board:\n\n"
         result += "  |"
         for i in range(0, 15):
-            result += "{:2d} ".format(i + 1)
+            result += f"{(i + 1):2d} "
         result += " | "
         for i in range(0, 15):
-            result += "{:2d} ".format(i + 1)
+            result += f"{(i + 1):2d} "
         result += "\n"
         for y in range(0, 15):
             result += chr(ord('A') + y) + " |"
@@ -368,8 +368,8 @@ class Scrabble:
                 if t in g[self.DICT_BOARD]:
                     calc = True
                     # dieser Stein (t) auf dem Board (g) vorhanden
-                    logging.info("korrigiere {:s}:{:d}".format(chr(ord('A') + t[1]), t[0] + 1))
-                    logging.debug("im Zug " + str(g[self.DICT_MOVE]))
+                    logging.info(f"korrigiere {chr(ord('A') + t[1])}:{t[0] + 1}")
+                    logging.debug(f"im Zug {g[self.DICT_MOVE]}")
                     g[self.DICT_BOARD][t] = _changed[t]
                     m.board[t] = _changed[t]
             if calc:
@@ -382,7 +382,7 @@ class Scrabble:
                             w += m.board[(m.col, m.row + i)][0]
                         else:
                             w += m.board[(m.col + i, m.row)][0]
-                logging.info("correct word:" + w)
+                logging.info(f"correct word: {w}")
                 m.word = w
             m.score = m.calc_score()
             sums[m.nickname] += m.score
@@ -392,7 +392,7 @@ class Scrabble:
         cur_board = {} if len(self.game) < 1 else self.game[-1][self.DICT_BOARD]
         for i in cur_board.keys():
             if i in new_board.keys() and cur_board[i][1] > new_board[i][1]:
-                logging.debug("nehme den besseren Wert des alten Boards {}".format(str(i)))
+                logging.debug(f"nehme den besseren Wert des alten Boards {i}")
                 new_board[i] = cur_board[i]
         new_tiles = {i: new_board[i] for i in set(new_board.keys()).difference(cur_board)}
         removed_tiles = {i: cur_board[i] for i in set(cur_board.keys()).difference(new_board)}
@@ -400,7 +400,7 @@ class Scrabble:
                          i not in removed_tiles and cur_board[i][0] != new_board[i][0]}
         logging.info(self.print_board(new_board, new_tiles, removed_tiles))
         if len(changed_tiles) > 0:
-            logging.debug("changed tiles:" + str(changed_tiles))
+            logging.debug(f"changed tiles: {changed_tiles}")
             self.correct_tiles(new_board, changed_tiles)
         return new_board, new_tiles, removed_tiles, changed_tiles
 
@@ -422,7 +422,7 @@ class Scrabble:
             elif len(changed) < 1:
                 horizontal = True
             if vertical and horizontal:
-                logging.warning("illegal move: {}".format(changed))
+                logging.warning(f"illegal move: {changed}")
                 raise Exception("move: neue Steine sowohl in abweichenden Spalten und Zeilen (illegaler Zug)")
             (x, y) = changed[0]
             minx = x
@@ -465,7 +465,7 @@ class Scrabble:
                 move.sum = self.get_score(nickname)
                 move.score = -1
         self.game.append((None, new_board, move, removed_tiles, changed_tiles))
-        logging.info("scrabble: move - time: {}".format(datetime.datetime.now() - start))
+        logging.info(f"scrabble: move - time: {datetime.datetime.now() - start}")
 
     def valid_challenge(self):
         start = datetime.datetime.now()
@@ -474,7 +474,7 @@ class Scrabble:
         # angezweifelter Zug
         last_move = self.game[-1][self.DICT_MOVE]
         if last_move.type not in (MoveType.regular, MoveType.challenge_bonus):
-            logging.info("scrabble: double valid_challenge - time: {}".format(datetime.datetime.now() - start))
+            logging.info(f"scrabble: double valid_challenge - time: {datetime.datetime.now() - start}")
             return
         # Zustand des Bretts vor dem letzten Zug (vor dem ersten Zug leer)
         last_board = {} if len(self.game) < 2 else self.game[-2][self.DICT_BOARD]
@@ -486,7 +486,7 @@ class Scrabble:
         move.word = last_move.word
         move.sum = last_move.sum - last_move.score
         self.game.append((None, new_board, move, removed_tiles, changed_tiles))
-        logging.info("scrabble: challenge - time: {}".format(datetime.datetime.now() - start))
+        logging.info(f"scrabble: challenge - time: {datetime.datetime.now() - start}")
 
     def invalid_challenge(self, nickname):
         start = datetime.datetime.now()
@@ -494,7 +494,7 @@ class Scrabble:
             raise Exception("anzweifeln: kann nicht als erster Zug verwendet werden")
         last_move = self.game[-1][self.DICT_MOVE]
         if last_move.type not in (MoveType.regular, MoveType.challenge_bonus):
-            logging.info("scrabble: invalid_challenge not allowed - time: {}".format(datetime.datetime.now() - start))
+            logging.info(f"scrabble: invalid_challenge not allowed - time: {datetime.datetime.now() - start}")
             return
         last_board = self.game[-1][self.DICT_BOARD]
         logging.debug("scrabble: analyse invalid challenge")
@@ -504,7 +504,7 @@ class Scrabble:
         move.sum = self.get_score(nickname) - MALUS_DOUBT
         move.word = ""
         self.game.append((None, last_board, move, {}, {}))
-        logging.info("scrabble: invalid_challenge - time: {}".format(datetime.datetime.now() - start))
+        logging.info(f"scrabble: invalid_challenge - time: {datetime.datetime.now() - start}")
 
     def reset(self):
         self.game.clear()

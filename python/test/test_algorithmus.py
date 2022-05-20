@@ -23,7 +23,8 @@ import os
 
 from scrabble import Scrabble
 
-logging.config.fileConfig(fname=os.path.dirname(os.path.abspath(__file__)) + '/test_log.conf', disable_existing_loggers=False)
+logging.config.fileConfig(fname=os.path.dirname(os.path.abspath(__file__)) + '/test_log.conf',
+                          disable_existing_loggers=False)
 # kein FTP Upload beim Test
 config.FTP = False
 

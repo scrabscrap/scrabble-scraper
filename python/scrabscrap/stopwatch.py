@@ -128,10 +128,10 @@ class StopWatch:
         _now = datetime.datetime.now()
         t_left = (self.timer_date - _now) if self.timer_date is not None else self.timer_left
         if 0 < t_left.total_seconds() <= MAX_TIME:  # innerhalb der normalen Zeit
-            return "{:02d}{:02d}".format(int((t_left.seconds // 60) % 60), int(t_left.seconds % 60))
+            return f"{int((t_left.seconds // 60) % 60):02d}{int(t_left.seconds % 60):02d}"
         if MIN_TIME < t_left.total_seconds() <= 0:  # in der "Strafzeit"
             _s = int(-t_left.total_seconds())
-            return "-{:01d}{:02d}".format(int((_s // 60) % 60), int(_s % 60))
+            return f"-{int((_s // 60) % 60):01d}{int(_s % 60):02d}"
         return "----"
 
     def fill_display(self):

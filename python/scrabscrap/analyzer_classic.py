@@ -204,6 +204,6 @@ class AnalyzerClassic:
             _mark = overlay_grid(self.warped)
             _mark = overlay_tiles(_mark, board=self.board)
             visualLogger.debug(VisualRecord("marked", [_mark], fmt="jpg"))
-        logging.info("timer analyze: {:.2f} sec".format(time.time() - _start))
-        logging.debug("visited: #{} {}".format(len(tile_candidates), tile_candidates))
+        logging.info(f"timer analyze: {(time.time() - _start):.2f} sec")
+        logging.debug(f"visited: #{len(tile_candidates)} {tile_candidates}")
         return self.board, self.warped
