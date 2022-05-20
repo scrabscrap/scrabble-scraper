@@ -54,15 +54,12 @@ class WorkerFtp(threading.Thread):
             _start = datetime.datetime.now()
             logging.info("ftp: start upload to ftp-server")
             session = ftplib.FTP(self.ftp_server, self.ftp_user, self.ftp_pass)
-            file = open(WEB_PATH + "data-" + str(move) + ".json", 'rb')  # file to send
-            session.storbinary("STOR data-" + str(move) + ".json", file)  # send the file
-            file.close()  # close file and FTP
-            file = open(WEB_PATH + "image-" + str(move) + ".jpg", 'rb')  # file to send
-            session.storbinary("STOR image-" + str(move) + ".jpg", file)  # send the file
-            file.close()  # close file and FTP
-            file = open(WEB_PATH + "data-" + str(move) + ".json", 'rb')  # file to send
-            session.storbinary("STOR status.json", file)  # send the file
-            file.close()  # close file and FTP
+            with open(WEB_PATH + "data-" + str(move) + ".json", 'rb') as file:
+                session.storbinary("STOR data-" + str(move) + ".json", file)   # send the file
+            with open(WEB_PATH + "image-" + str(move) + ".jpg", 'rb') as file:
+                session.storbinary("STOR image-" + str(move) + ".jpg", file)   # send the file
+            with open(WEB_PATH + "data-" + str(move) + ".json", 'rb') as file:
+                session.storbinary("STOR status.json", file)  # send the file
             session.quit()
             logging.info(f"ftp: end upload to ftp-server: {self.ftp_server} {datetime.datetime.now() - _start}")
         except Exception as e:
@@ -76,9 +73,8 @@ class WorkerFtp(threading.Thread):
             _start = datetime.datetime.now()
             logging.info("ftp: start transfer zip file to ftp server")
             session = ftplib.FTP(self.ftp_server, self.ftp_user, self.ftp_pass)
-            file = open(WEB_PATH + filename + ".zip", 'rb')  # file to send
-            session.storbinary("STOR " + filename + ".zip", file)  # send the file
-            file.close()  # close file and FTP
+            with open(WEB_PATH + filename + ".zip", 'rb') as file:
+                session.storbinary("STOR " + filename + ".zip", file)  # send the file
             logging.info("ftp: delete data files from ftp server")
             files = session.nlst()
             for i in files:

@@ -307,45 +307,44 @@ class Scrabble:
         return result
 
     def read_gcg_file(self, filename):
-        file = open(filename, encoding="ISO-8859-1")
-        for line in file:
-            line = line.strip()
-            if len(line) <= 0:
-                continue
-            m = GCG_NICKNAME1.match(line)
-            if m is not None:
-                self.header.append(line)
-                # self.nick1 = m.group(0)
-                continue
-            m = GCG_NICKNAME2.match(line)
-            if m is not None:
-                self.header.append(line)
-                # self.nick2 = m.group(0)
-                continue
-            m = GCG_HEADER.match(line)
-            if m is not None:
-                self.header.append(line)
-                continue
-            move = Move()
-            move.set_from_string(line)
-            _board = self.game[-1][self.DICT_BOARD].copy() if len(self.game) > 0 else {}
-            if move.type == MoveType.regular:
-                for i in range(0, len(move.word)):
-                    if move.word[i] != '.':
-                        if move.is_vertical:
-                            _board[(move.col, move.row + i)] = (move.word[i], 99)
-                        else:
-                            _board[(move.col + i, move.row)] = (move.word[i], 99)
-            elif move.type == MoveType.withdraw:
-                prev_move = self.game[-1][self.DICT_MOVE]
-                for i in range(0, len(prev_move.word)):
-                    if prev_move.word[i] != '.':
-                        if move.is_vertical:
-                            del _board[(prev_move.col, prev_move.row + i)]
-                        else:
-                            del _board[(prev_move.col + i, prev_move.row)]
-            self.game.append((None, _board, move, {}, {}))
-        file.close()
+        with open(filename, encoding="ISO-8859-1") as file:
+            for line in file:
+                line = line.strip()
+                if len(line) <= 0:
+                    continue
+                m = GCG_NICKNAME1.match(line)
+                if m is not None:
+                    self.header.append(line)
+                    # self.nick1 = m.group(0)
+                    continue
+                m = GCG_NICKNAME2.match(line)
+                if m is not None:
+                    self.header.append(line)
+                    # self.nick2 = m.group(0)
+                    continue
+                m = GCG_HEADER.match(line)
+                if m is not None:
+                    self.header.append(line)
+                    continue
+                move = Move()
+                move.set_from_string(line)
+                _board = self.game[-1][self.DICT_BOARD].copy() if len(self.game) > 0 else {}
+                if move.type == MoveType.regular:
+                    for i in range(0, len(move.word)):
+                        if move.word[i] != '.':
+                            if move.is_vertical:
+                                _board[(move.col, move.row + i)] = (move.word[i], 99)
+                            else:
+                                _board[(move.col + i, move.row)] = (move.word[i], 99)
+                elif move.type == MoveType.withdraw:
+                    prev_move = self.game[-1][self.DICT_MOVE]
+                    for i in range(0, len(prev_move.word)):
+                        if prev_move.word[i] != '.':
+                            if move.is_vertical:
+                                del _board[(prev_move.col, prev_move.row + i)]
+                            else:
+                                del _board[(prev_move.col + i, prev_move.row)]
+                self.game.append((None, _board, move, {}, {}))
 
     def get_score(self, nickname):
         cnt = len(self.game) - 1

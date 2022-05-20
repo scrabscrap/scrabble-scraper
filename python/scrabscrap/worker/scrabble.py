@@ -117,12 +117,10 @@ class WorkerScrabble(threading.Thread):
                         'bag': []
                     })
                 # überschreibe den aktuellen Zustand
-                f = open(WEB_PATH + "data-0.json", "w")
-                f.write(to_json)
-                f.close()
-                f = open(WEB_PATH + "status.json", "w")
-                f.write(to_json)
-                f.close()
+                with open(WEB_PATH + "data-0.json", "w") as f:
+                    f.write(to_json)
+                with open(WEB_PATH + "status.json", "w") as f:
+                    f.write(to_json)
                 open(WEB_PATH + "image-0.jpg", 'a').close()
                 if FTP and self.ftp_queue is not None:
                     self.ftp_queue.put(('move', 0, None))
@@ -157,13 +155,11 @@ class WorkerScrabble(threading.Thread):
                         'board': dict(zip(*[k1, v1])),
                         'bag': bag
                     })
-                f = open(WEB_PATH + "data-" + str(zug) + ".json", "w")
-                f.write(to_json)
-                f.close()
+                with open(WEB_PATH + "data-" + str(zug) + ".json", "w") as f:
+                    f.write(to_json)
                 # überschreibe den aktuellen Zustand
-                f = open(WEB_PATH + "status.json", "w")
-                f.write(to_json)
-                f.close()
+                with open(WEB_PATH + "status.json", "w") as f:
+                    f.write(to_json)
                 cv2.imwrite(WEB_PATH + "image-" + str(zug) + ".jpg", item.img)
                 if FTP and self.ftp_queue is not None:
                     self.ftp_queue.put(('move', zug, None))
@@ -184,9 +180,8 @@ class WorkerScrabble(threading.Thread):
         prefix = WEB_PATH + filename
 
         try:
-            f = open(prefix + ".gcg", "w")
-            f.write(str(item.scrabble))
-            f.close()
+            with open(prefix + ".gcg", "w") as f:
+                f.write(str(item.scrabble))
             with ZipFile(prefix + '.zip', 'w') as _zip:
                 _zip.write(prefix + ".gcg")
                 logging.info(f"create zip with {len(item.scrabble.game):d} files")
