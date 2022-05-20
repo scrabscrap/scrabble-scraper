@@ -44,7 +44,7 @@ class AnalyzerClassic:
         self.warped = None
 
     @staticmethod
-    def _warp(__image):
+    def warp(__image):
         # based on: https://www.pyimagesearch.com/2014/08/25/4-point-opencv-getperspective-transform-example/
         (blue, _, _) = cv2.split(__image.copy())
 
@@ -183,7 +183,7 @@ class AnalyzerClassic:
         if self.img is None:
             raise ValueError("img darf nicht None sein")
         self.board = last_board if last_board is not None else {}
-        self.warped = self._warp(self.img) if must_warp else self.img
+        self.warped = self.warp(self.img) if must_warp else self.img
 
         if last_board is not None:
             self.board = {i: last_board[i] for i in last_board if last_board[i][1] >= 90 and last_board[i][0] != '_'}

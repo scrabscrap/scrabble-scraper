@@ -27,7 +27,7 @@
                         <form class="navbar-form navbar-left" action="/max_time" method="post">
                             <div class="form-group">
                                 <input class="form-control" name="max_time" maxlength="4" placeholder="1800"
-                                    value="{{ max_time }}"></input>
+                                    value="{{ max_time }}" />
                             </div>
                             <button type="submit" class="btn btn-warning" value="Update">
                                 <span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span>&nbsp;Update
@@ -44,7 +44,7 @@
                         <form class="navbar-form navbar-left" action="/doubt_timeout" method="post">
                             <div class="form-group">
                                 <input class="form-control" name="doubt_timeout" maxlength="4" placeholder="20"
-                                    value="{{ doubt_timeout }}"></input>
+                                    value="{{ doubt_timeout }}" />
                             </div>
                             <button type="submit" class="btn btn-warning" value="Update Anzweifen">
                                 <span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span>&nbsp;Update
@@ -62,7 +62,7 @@
                         <form class="navbar-form navbar-left" action="/malus_doubt" method="post">
                             <div class="form-group">
                                 <input class="form-control" name="malus_doubt" maxlength="4" placeholder="10"
-                                    value="{{ malus_doubt }}"></input>
+                                    value="{{ malus_doubt }}" />
                             </div>
                             <button type="submit" class="btn btn-warning" value="Update Malus">
                                 <span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span>&nbsp;Update
@@ -79,8 +79,8 @@
                     <td>
                         <form class="navbar-form navbar-left" action="/video_rotade" method="post">
                             <div class="form-group form-check">
-                                <input type="checkbox" class="form-check-input" name="video_rotade" id="video_rotade" {%
-                                    if video_rotade %} checked {% endif %}>
+                                <input type="checkbox" class="form-check-input" name="video_rotade" id="video_rotade"
+                                       {% if video_rotade %} checked {% endif %} />
                             </div>
                             <button type="submit" class="btn btn-primary" value="Update">
                                 <span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span>&nbsp;Update
@@ -97,7 +97,7 @@
                         <form class="navbar-form navbar-left" action="/board_layout" method="post">
                             <div class="form-group">
                                 <input class="form-control" name="board_layout" maxlength="8" placeholder="custom"
-                                    value="{{ board_layout }}"></input>
+                                    value="{{ board_layout }}" />
                             </div>
                             <button type="submit" class="btn btn-warning" value="Update video rotade">
                                 <span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span>&nbsp;Update
@@ -114,8 +114,8 @@
                     <td>
                         <form class="navbar-form navbar-left" action="/ftp_upload" method="post">
                             <div class="form-group form-check">
-                                <input type="checkbox" class="form-check-input" name="ftp_upload" id="ftp_upload" {% if
-                                    ftp_active %} checked {% endif %}>
+                                <input type="checkbox" class="form-check-input" name="ftp_upload" id="ftp_upload"
+                                       {% if ftp_active %} checked {% endif %} />
                             </div>
                             <button type="submit" class="btn btn-primary" value="Update">
                                 <span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span>&nbsp;Update
@@ -144,7 +144,7 @@
         </button>
     </form>
 
-    <!-- Modal deleteGames-->
+    <!-- Modal delete_games-->
     <div class="modal fade" id="modalDeleteGames" tabindex="-1" role="dialog" aria-labelledby="modalDeleteGamesLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -170,7 +170,7 @@
         </div>
     </div>
 
-    <!-- Modal resetConfig-->
+    <!-- Modal reset_config-->
     <div class="modal fade" id="modalResetConfig" tabindex="-1" role="dialog" aria-labelledby="modalResetConfigLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">

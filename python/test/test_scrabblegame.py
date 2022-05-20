@@ -37,6 +37,7 @@ game_logger = logging.getLogger('boardLogger')
 # kein FTP Upload beim Test
 config.FTP = False
 
+
 class ScrabbleGameTestCase(unittest.TestCase):
 
     def setUp(self):

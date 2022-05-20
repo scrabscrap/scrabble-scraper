@@ -46,7 +46,7 @@ class AnalyzerCustom:
         self.warped = None
 
     @staticmethod
-    def _warp(__image):
+    def warp(__image):
         global last_warp
 
         warp = configparser.ConfigParser()
@@ -261,7 +261,7 @@ class AnalyzerCustom:
             global last_warp
             last_warp = None
 
-        self.warped = self._warp(self.img) if must_warp else self.img
+        self.warped = self.warp(self.img) if must_warp else self.img
         self.gray = cv2.cvtColor(self.warped, cv2.COLOR_BGR2GRAY)
 
         set_of_tiles = self._prepare_grid_image(self.warped)

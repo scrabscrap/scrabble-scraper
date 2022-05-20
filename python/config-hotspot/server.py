@@ -148,7 +148,7 @@ def set_ftp():
 
 
 @APP.route('/download_logs', methods=['POST', 'GET'])
-def downloadLogs():
+def download_logs():
     # compess logs and serve
     import zipfile
 
@@ -162,7 +162,7 @@ def downloadLogs():
 
 
 @APP.route('/delete_logs', methods=['POST', 'GET'])
-def deleteLogs():
+def delete_logs():
     # delete logs
     # print(APP.root_path)
     subprocess.call(ROOT_PATH + "/script/delete-logs.sh", shell=True)
@@ -170,7 +170,7 @@ def deleteLogs():
 
 
 @APP.route('/update_unix', methods=['POST', 'GET'])
-def updateUnix():
+def update_unix():
     display_left.show("UPDT")
     display_right.show("UNIX")
     # flag to update unix
@@ -181,7 +181,7 @@ def updateUnix():
 
 
 @APP.route('/update_scrabscrap', methods=['POST', 'GET'])
-def updateScrabScrap():
+def update_scrabscrap():
     display_left.show("UPDT")
     display_right.show("APP ")
     # flag to update ScrabScrap
@@ -271,21 +271,21 @@ def set_ftp_upload():
 
 
 @APP.route('/reset_config', methods=['POST'])
-def resetConfig():
+def reset_config():
     # reset config
     subprocess.call(ROOT_PATH + "/script/reset-config.sh", shell=True)
     return redirect('/scrabble.html')
 
 
 @APP.route('/delete_games', methods=['POST'])
-def deleteGames():
+def delete_games():
     # delete games
     subprocess.call(ROOT_PATH + "/script/delete-games.sh", shell=True)
     return redirect('/scrabble.html')
 
 
 @APP.route('/download_games', methods=['POST', 'GET'])
-def downloadGames():
+def download_games():
     # compress games and serve
     import zipfile
 
@@ -303,6 +303,7 @@ def downloadGames():
 #####################
 cap = None
 warp_image = None
+
 
 @APP.route('/get_warp')
 def get_warp():
@@ -330,7 +331,7 @@ def show_warp():
         analyzer = analyzer_custom.AnalyzerCustom()
     else:
         analyzer = analyzer_classic.AnalyzerClassic()
-    warped = analyzer._warp(picture)
+    warped = analyzer.warp(picture)
     _mark = board.overlay_grid(warped)
     # _resized = cv2.resize(_mark, (500, 500))
     _, buffer = cv2.imencode('.jpg', _mark)

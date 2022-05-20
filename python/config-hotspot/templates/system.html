@@ -44,9 +44,9 @@
                         <form class="navbar-form navbar-left" action="/wifi" method="post">
                             <div class="form-group">
                                 <input class="form-control" name="ssid" maxlength="64" required
-                                    placeholder="ssid"></input>
+                                    placeholder="ssid" />
                                 <input class="form-control" type="password" name="wifi_password" minlength=8
-                                    maxlength="64" required placeholder="password"></input>
+                                    maxlength="64" required placeholder="password" />
                             </div>
                             <button type="submit" class="btn btn-warning" value="Add Wifi">
                                 <span class="glyphicon glyphicon-flash" aria-hidden="true"></span>&nbsp;Add
@@ -68,11 +68,11 @@
                         <form class="navbar-form navbar-left" action="/ftp" method="post">
                             <div class="form-group">
                                 <input class="form-control" name="ftp_server" maxlength="256" placeholder="server"
-                                    value="{{ ftp_server }}"></input>
+                                    value="{{ ftp_server }}" />
                                 <input class="form-control" name="ftp_user" maxlength="64" placeholder="user"
-                                    value="{{ ftp_user }}"></input>
+                                    value="{{ ftp_user }}" />
                                 <input class="form-control" type="password" name="ftp_password" maxlength="64"
-                                    placeholder="password"></input>
+                                    placeholder="password" />
                             </div>
                             <button type="submit" class="btn btn-primary" value="Update FTP User">
                                 <span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span>&nbsp;Update
@@ -112,7 +112,7 @@
         </button>
     </form>
 
-    <!-- Modal deleteLogs-->
+    <!-- Modal delete_logs-->
     <div class="modal fade" id="modalDeleteLogs" tabindex="-1" role="dialog" aria-labelledby="modalDeleteLogsLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -222,4 +222,5 @@
 
 
     </div>
-    {% endblock %}
+</div>
+{% endblock %}
