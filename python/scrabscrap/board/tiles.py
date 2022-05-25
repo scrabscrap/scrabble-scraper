@@ -39,6 +39,7 @@ class OneTile:
         self.h = 0
 
 
+# noinspection PyUnresolvedReferences
 def load_tiles(filepath=None):
     tiles.clear()
     if filepath is None:

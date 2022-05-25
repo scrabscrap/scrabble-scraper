@@ -36,12 +36,17 @@ from flask import Flask
 from flask_bootstrap import Bootstrap
 
 # todo evtl. auch für die Werte den Standard-Parser nehmen
+# noinspection PyUnresolvedReferences
 from config import TM1637, CLK1, CLK2, DIO1, DIO2
+# noinspection PyUnresolvedReferences
 from hardware import led
+# noinspection PyUnresolvedReferences
 from hardware import videostream as vs
+# noinspection PyUnresolvedReferences
 from board import board
 
 if TM1637:
+    # noinspection PyUnresolvedReferences
     from hardware import tm1637
 
     display_left = tm1637.TM1637(clk=CLK1, dio=DIO1)
@@ -504,6 +509,7 @@ def starthtml():
     return render_template('start.html')
 
 
+# noinspection PyUnresolvedReferences
 @APP.route('/scrabscrap', methods=['POST'])
 def reboot():
     if display_left is not None:

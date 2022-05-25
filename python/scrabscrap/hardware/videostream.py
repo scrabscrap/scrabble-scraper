@@ -37,6 +37,7 @@ except ImportError:
 
 class PiVideoStream:
 
+    # noinspection PyUnusedLocal
     def __init__(self, src=0, name="PIVideoStream", width=IM_WIDTH, height=IM_HEIGHT, fps=FPS):
 
         resolution = (width, height)
