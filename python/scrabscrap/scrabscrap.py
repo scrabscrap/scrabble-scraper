@@ -234,10 +234,14 @@ class Game:
                         action = self.action_event.wait()
                     # bei diesen action sofort abbrechen
                     if action in (PAUSE, RESET, QUIT, CONFIG):
+                        logging.debug("main: button pressed PAUSE, RESET, QUIT, CONFIG")
                         motion = False
                         break
                     time.sleep(0.04)
-                    if action is not None or motion or motion_wait > time.time():
+                    if action is not None:
+                        logging.debug("main: button pressed action")
+                        break
+                    if motion or motion_wait > time.time():
                         break
             # bei diesen action muss kein Bild aufgenommen werden
             if action not in (PAUSE, RESET, QUIT, CONFIG):
