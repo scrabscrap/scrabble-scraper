@@ -463,6 +463,14 @@ class Scrabble:
                 move.type = MoveType.unknown
                 move.sum = self.get_score(nickname)
                 move.score = -1
+                blanks = {i: new_board[i] for i in new_tiles if new_board[i][0] == '_'}
+                if len(blanks) > 2:
+                    logging.error(f"too many blanks ({len(blanks)}) - remove all new blanks")
+                    logging.error(self.print_board(new_board, new_tiles, removed_tiles))
+                    for i in new_tiles:
+                        if new_board[i][0] == '_':
+                            new_board[i] = None
+
         self.game.append((None, new_board, move, removed_tiles, changed_tiles))
         logging.info(f"scrabble: move - time: {datetime.datetime.now() - start}")
 
