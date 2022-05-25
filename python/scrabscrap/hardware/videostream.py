@@ -136,7 +136,7 @@ class CvVideoStream:
 
     def close(self):
         time.sleep(1)
-        self.stream.close()
+        self.stream.release()
 
 
 class SimulateVideo:
