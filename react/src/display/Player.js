@@ -7,7 +7,8 @@ class Player extends React.Component {
     if (this.props.name === this.props.current) {
       headerclass = headerclass + " text-white bg-success"
     }
-    var _tmp = 1800 - this.props.time
+//    var _tmp = 1800 - this.props.time
+    var _tmp = this.props.time
     var vz = ''
     if (_tmp < 0) {
       _tmp = -_tmp
@@ -20,7 +21,7 @@ class Player extends React.Component {
     return (
         <div className="card player">
           <div className={headerclass}>
-            {this.props.name}: {this.props.score} (Zeit: {vz}{Math.trunc(_m / 10) % 10}{(_m % 10)}:{Math.trunc(_s / 10)}{(_s % 10)})
+            {this.props.name}: {this.props.score} (Restzeit: {vz}{Math.trunc(_m / 10) % 10}{(_m % 10)}:{Math.trunc(_s / 10)}{(_s % 10)})
           </div>
         </div>
     );
