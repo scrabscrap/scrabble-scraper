@@ -10,9 +10,10 @@ class Moves extends React.Component {
     if (this.props.moves != null) {
       for (const [key, value] of Array.from(this.props.moves.entries()).reverse()) {
         let sp = value.split(' ')
+        let img_link = "/web/image-" + (key + 1) + ".jpg"
         if (sp.length === 4) {
-          items.push(<tr>
-            <td>{key + 1}</td>
+          items.push(<tr key={key + 1}>
+            <td><a href={img_link} target="_scrabscrap_board">{key + 1}</a></td>
             <td>{sp[0]}</td>
             <td>{sp[1]}</td>
             <td></td>
@@ -20,8 +21,8 @@ class Moves extends React.Component {
             <td style={align}>{sp[3]}</td>
           </tr>)
         } else {
-          items.push(<tr>
-            <td>{key + 1}</td>
+          items.push(<tr key={key + 1}>
+            <td><a href={img_link} target="_scrabscrap_board">{key + 1}</a></td>
             <td>{sp[0]}</td>
             <td>{sp[1]}</td>
             <td>{sp[2]}</td>
@@ -37,7 +38,9 @@ class Moves extends React.Component {
         <div className="card-header">Züge</div>
         <div className="card-body">
           <table className={"moves"}>
-            {items}
+            <tbody>
+                {items}
+            </tbody>
           </table>
         </div>
       </div>
