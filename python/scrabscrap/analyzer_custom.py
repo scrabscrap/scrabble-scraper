@@ -242,7 +242,7 @@ class AnalyzerCustom:
         if _coord not in _ignore:
             _y = get_y_position(_r)
             _x = get_x_position(_c)
-            _gray = self.gray[_y - 10:_y + GRID_H + 10, _x - 10:_x + GRID_W + 10]
+            _gray = self.gray[_y - 15:_y + GRID_H + 15, _x - 15:_x + GRID_W + 15]
             _queue.put((_coord, _gray, self.board), block=False)
         self._mark_grid(_queue, (_c + 1, _r), _candidat, _ignore)
         self._mark_grid(_queue, (_c - 1, _r), _candidat, _ignore)
