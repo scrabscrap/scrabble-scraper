@@ -36,6 +36,33 @@ class AlgorithmusTestCase(unittest.TestCase):
         # logging.disable(logging.ERROR)
         pass
 
+    def test_10(self):
+        # Testfall 10 - Hand auf dem Spielfeld
+        s = Scrabble()
+        # H4 FIRNS
+        board = {(3, 7): ('F', 75), (4, 7): ('I', 75), (5, 7): ('R', 75), (6, 7): ('N', 75), (7, 7): ('S', 75)}
+        s.move(board, "Spieler1")
+        board = {(0, 0): ('_', 75), (0, 1): ('_', 75), (0, 2): ('_', 75), (0, 3): ('_', 75),
+                 (1, 0): ('_', 75), (1, 1): ('_', 75), (1, 2): ('_', 75), (1, 3): ('_', 75),
+                 (2, 0): ('_', 75), (2, 1): ('_', 75), (2, 2): ('_', 75), (2, 3): ('_', 75),
+                 (2, 4): ('_', 75), (2, 5): ('_', 75), (2, 6): ('_', 75), (2, 7): ('_', 75),
+                 (3, 7): ('F', 75), (4, 7): ('I', 75), (5, 7): ('R', 75), (6, 7): ('N', 75), (7, 7): ('S', 75),
+                 (4, 6): ('V', 75), (4, 8): ('T', 75), (4, 9): ('E', 75), (4, 10): ('N', 75)}
+        s.move(board, "Spieler2")
+        expected = {(3, 7): ('F', 75), (4, 7): ('I', 75), (5, 7): ('R', 75), (6, 7): ('N', 75), (7, 7): ('S', 75),
+                 (4, 6): ('V', 75), (4, 8): ('T', 75), (4, 9): ('E', 75), (4, 10): ('N', 75)}
+
+        logging.info(s.print_board(s.game[-1][s.DICT_BOARD], {}, {}))
+        logging.info(str(s))
+        self.assertEqual(2, len(s.game))
+        self.assertEqual(24, s.get_score("Spieler1"))
+        self.assertEqual(0, s.get_score("Spieler2"))
+        b = s.game[-1][s.DICT_BOARD]
+        expected = dict(zip(*[expected.keys(), [t for (t, p) in expected.values()]]))
+        cmp = dict(zip(*[b.keys(), [t for (t, p) in b.values()]]))
+        self.assertEqual(cmp, expected, "Test 10")
+        del s
+
     def test_101(self):
         # Testfall 101 - Algorithmus: Tauschen bei leerem Board
         s = Scrabble()

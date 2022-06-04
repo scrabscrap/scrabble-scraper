@@ -467,9 +467,9 @@ class Scrabble:
                 if len(blanks) > 2:
                     logging.error(f"too many blanks ({len(blanks)}) - remove all new blanks")
                     logging.error(self.print_board(new_board, new_tiles, removed_tiles))
-                    for i in new_tiles:
-                        if new_board[i][0] == '_':
-                            new_board[i] = None
+                    _tmp = {i: new_board[i] for i in new_board if (i not in new_tiles) or (new_board[i][0] != '_')}
+                    new_board = _tmp
+                    move.board = _tmp.copy()
 
         self.game.append((None, new_board, move, removed_tiles, changed_tiles))
         logging.info(f"scrabble: move - time: {datetime.datetime.now() - start}")
