@@ -1,3 +1,5 @@
+__This project is no longer being developed. The successor project is [scrabble-scraper-v2](https://github.com/scrabscrap/scrabble-scraper-v2)__
+
 # Das Projekt ScrabScrap
 
 Die Idee zum Scrabble Scraper ist vor einem Scrabble Turnier in Hamburg
